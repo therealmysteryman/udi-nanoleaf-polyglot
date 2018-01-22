@@ -92,7 +92,7 @@ class Controller(polyinterface.Controller):
     def discover(self, *args, **kwargs):
         time.sleep(1)
         
-        if self.nano_ip is not None and self.nano_token not is None :
+        if self.nano_ip is not None and self.nano_token is not None :
             self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
 
     def delete(self):
