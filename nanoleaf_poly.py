@@ -34,7 +34,7 @@ class Controller(polyinterface.Controller):
             else:
                 self.host = ""
 
-            if self.host == "" 
+            if self.host == "":
                 LOGGER.error('MiLight requires \'host\' parameters to be specified in custom configuration.')
                 self.setDriver('ST', o)
                 return False
