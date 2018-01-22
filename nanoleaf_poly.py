@@ -83,7 +83,7 @@ class Controller(polyinterface.Controller):
         pass
 
     def longPoll(self):
-        pass
+        self.query()
 
     def query(self):
         for node in self.nodes:
@@ -143,8 +143,7 @@ class AuroraNode(polyinterface.Node):
         
         # Bright Status
         self.setDriver('GV3', self.my_aurora.brightness )
-        
- 
+    
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 100}]
