@@ -22,32 +22,49 @@ class Controller(polyinterface.Controller):
         super(Controller, self).__init__(polyglot)
         self.name = 'NanoLeaf'
         self.initialized = False
-        self.host = ""
-        self.userid = ""
         self.tries = 0
 
     def start(self):
         LOGGER.info('Started NanoLeaf for v2 NodeServer version %s', str(VERSION))
         try:
-            if 'host' in self.polyConfig['customParams']:
-                self.host = self.polyConfig['customParams']['host']
-            else:
-                self.host = ""
             
-            if 'token' in self.polyConfig['customParams']:
-                self.userid = self.polyConfig['customParams']['token']
+            if 'customData' in self.polyConfig:
+                if 'nano_ip' in self.polyConfig['customData']:
+                    self.nano_ip = self.polyConfig['customData']['nano_ip']
+                    custom_data_ip = True
+                    LOGGER.info('Nano IP found in the Database: {}'.format(self.nano_ip))
+                if 'nano_token' in self.polyConfig['customData']:
+                    self.nano_token = self.polyConfig['customData']['nano_token']
+                    custom_data_token = True
+                    LOGGER.info('Nano token found in the Database.')
             else:
-                self.userid = ""
-                
-            if self.host == "":
-                LOGGER.error('MiLight requires \'host\' parameters to be specified in custom configuration.')
-                self.setDriver('ST', o)
-                return False
-            else:
-                self.setDriver('ST', 1)
-                self.discover()
+                LOGGER.info('Custom Data is not found in the DB')
+            
+            if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
+                self.nano_ip = self.polyConfig['customParams']['ip']
+                LOGGER.info('Custom Bridge IP address specified: {}'.format(self.nano_ip))
+            if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
+                self.nano_token = self.polyConfig['customParams']['token']
+                LOGGER.info('Custom Bridge Username specified: {}'.format(self.nano_token))
+            
+            # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
+            if self.nano_token is None :
+                try:
+                    self.nano_token = setup.generate_auth_token("self.nano_ip)
+                except Exception:
+                    LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
+                    return False      
+            
+           if custom_data_ip == False or custom_data_token == False:
+                LOGGER.debug('Saving access credentials to the Database')
+                data = { 'ip': self.nano_ip, 'token': self.nano_token }
+                self.saveCustomData(data)
+           
+           return True
+                                                            
         except Exception as ex:
             LOGGER.error('Error starting NanoLeaf NodeServer: %s', str(ex))
+            return False
 
     def shortPoll(self):
         pass
@@ -61,14 +78,9 @@ class Controller(polyinterface.Controller):
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
-        #LOGGER.error(self.host)
-        #ipAddressList = setup.find_auroras()
-        #token = setup.generate_auth_token("172.16.50.27")
-        #self.userid = token
-        #data = { 'bridge_ip': self.host, 'bridge_user': token }
-        #self.saveCustomData(data)
         
-        self.addNode(AuroraNode(self, self.address, 'aurora', 'Aurora'))
+        if self.nano_ip is not None and self.nano_token is None :
+            self.addNode(AuroraNode(self, self.address, 'aurora', 'Aurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -82,13 +94,11 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         
-        LOGGER.info(self.parent.host)
-        LOGGER.info(self.parent.userid)
-        self.my_aurora = Aurora(self.parent.host,self.parent.userid)
+        self.my_aurora = Aurora(self.nano_ip,self.nano_token)
         self.timeout = 5.0
             
     def start(self):
-        pass
+        self.query()                                             
 
     def setOn(self, command):
         self.my_aurora.on = True
@@ -101,17 +111,23 @@ class AuroraNode(polyinterface.Node):
     def setBrightness(self, command):
         query = command.get('query')
         intBri = int(command.get('value'))
-        
+        self.my_aurora.brightness =   intBri                                                   
         self.setDriver('GV3', intBri)
 
     def setEffect(self, command):
         query = command.get('query')
         intEffect = int(command.get('value'))
-       
+        self.my_aurora.effect = "Flames"
         self.setDriver('GV4', intEffect)
        
     def query(self):
         self.reportDrivers()
+                                                                
+        if self.my_aurora.on :
+            self.setDriver('ST', 100)
+        else:
+            self.setDriver('ST', 0)   
+        self.setDriver('GV3', self.my_aurora.brightness)  
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
