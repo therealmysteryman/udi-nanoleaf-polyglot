@@ -82,7 +82,9 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         
-        #self.my_aurora = Aurora(self.parent.host,self.parent.userid)
+        LOGGER.info(self.parent.host)
+        LOGGER.info(self.parent.userid)
+        self.my_aurora = Aurora(self.parent.host,self.parent.userid)
         self.timeout = 5.0
             
     def start(self):
