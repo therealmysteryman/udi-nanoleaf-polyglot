@@ -30,6 +30,8 @@ class Controller(polyinterface.Controller):
     def start(self):
         LOGGER.info('Started NanoLeaf for v2 NodeServer version %s', str(VERSION))
         try:
+            custom_data_ip = False
+            custom_data_token = False
             
             if 'customData' in self.polyConfig:
                 if 'nano_ip' in self.polyConfig['customData']:
@@ -45,10 +47,10 @@ class Controller(polyinterface.Controller):
             
             if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
                 self.nano_ip = self.polyConfig['customParams']['ip']
-                LOGGER.info('Custom Bridge IP address specified: {}'.format(self.nano_ip))
+                LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
             if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
                 self.nano_token = self.polyConfig['customParams']['token']
-                LOGGER.info('Custom Bridge Username specified: {}'.format(self.nano_token))
+                LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
             if self.nano_token is None :
