@@ -56,7 +56,9 @@ class Controller(polyinterface.Controller):
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
+        LOGGER.error(self.host)
         token = setup.generate_auth_token(self.host)
+        LOGGER.error(token)
         
         self.userid = token
         
