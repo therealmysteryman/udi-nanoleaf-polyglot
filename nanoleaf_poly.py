@@ -84,8 +84,8 @@ class Controller(polyinterface.Controller):
     def discover(self, *args, **kwargs):
         time.sleep(1)
         
-        if self.nano_ip is not None and self.nano_token is None :
-            self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
+        #if self.nano_ip is not None and self.nano_token is None :
+        self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -98,7 +98,6 @@ class AuroraNode(polyinterface.Node):
 
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
-        
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self.timeout = 5.0
             
