@@ -103,7 +103,8 @@ class AuroraNode(polyinterface.Node):
         self.timeout = 5.0
             
     def start(self):
-        self.query()                                             
+        pass
+        #self.query()                                             
 
     def setOn(self, command):
         self.my_aurora.on = True
@@ -128,11 +129,11 @@ class AuroraNode(polyinterface.Node):
     def query(self):
         self.reportDrivers()
                                                                 
-        if self.my_aurora.on :
-            self.setDriver('ST', 100)
-        else:
-            self.setDriver('ST', 0)   
-        self.setDriver('GV3', self.my_aurora.brightness)  
+        #if self.my_aurora.on :
+        #    self.setDriver('ST', 100)
+        #else:
+        #    self.setDriver('ST', 0)   
+        #self.setDriver('GV3', self.my_aurora.brightness)  
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
