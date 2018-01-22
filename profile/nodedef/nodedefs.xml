@@ -26,7 +26,7 @@
                     <p id="" editor="MCLBRI" init="GV3" />
                 </cmd>
                 <cmd id="SET_EFFECT">
-                    <p id="" editor="MEFFECT" init="GV4" />
+                    <p id="" editor="MEFFECT" />
                 </cmd>
             </accepts>
         </cmds>
