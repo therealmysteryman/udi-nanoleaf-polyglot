@@ -59,8 +59,8 @@ class Controller(polyinterface.Controller):
                 LOGGER.debug('Saving access credentials to the Database')
                 data = { 'ip': self.nano_ip, 'token': self.nano_token }
                 self.saveCustomData(data)
-           
-           return True
+            
+            return True
                                                             
         except Exception as ex:
             LOGGER.error('Error starting NanoLeaf NodeServer: %s', str(ex))
