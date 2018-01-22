@@ -55,7 +55,7 @@ class Controller(polyinterface.Controller):
                     LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
                     return False      
             
-           if custom_data_ip == False or custom_data_token == False:
+            if custom_data_ip == False or custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
                 data = { 'ip': self.nano_ip, 'token': self.nano_token }
                 self.saveCustomData(data)
