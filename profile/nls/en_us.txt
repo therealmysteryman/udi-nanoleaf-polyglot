@@ -11,9 +11,13 @@ ST-GV3-NAME = Brightness
 ST-GV4-NAME = Effect
 ST-GV5-NAME = Status
 
-EFFECT_SEL-1 = Aqua
-EFFECT_SEL-2 = Azure
-EFFECT_SEL-3 = Beige
+EFFECT_SEL-1 = Flames
+EFFECT_SEL-2 = Forest
+EFFECT_SEL-3 = Nemo
+EFFECT_SEL-4 = Northern Lights
+EFFECT_SEL-5 = Romantic
+EFFECT_SEL-6 = Snowfall
+EFFECT_SEL-7 = Fireworks And Firecrackers
 
 CMD-DON-NAME = On
 CMD-DOF-NAME = Off
