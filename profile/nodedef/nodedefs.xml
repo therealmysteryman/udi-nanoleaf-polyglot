@@ -10,13 +10,10 @@
             </accepts>
         </cmds>
     </nodeDef>
-    <nodeDef id="MILIGHT_LIGHT" nls="MGR">
+    <nodeDef id="AURORA" nls="MGR">
         <editors />
         <sts>
             <st id="ST" editor="MONOFF" />
-            <st id="CLITEMP" editor="HKELVIN" />
-            <st id="GV1" editor="MCOLOR" />  <!-- Color -->
-            <st id="GV2" editor="MCLSAT" /> <!-- Saturation -->
             <st id="GV3" editor="MCLBRI" /> <!-- Brightness -->
             <st id="GV4" editor="MEFFECT" />
         </sts>
@@ -25,43 +22,6 @@
             <accepts>
                 <cmd id="DON" />
                 <cmd id="DOF" />
-                <cmd id="WHITE_MODE"/>
-                <cmd id="NIGHT_MODE"/>
-                <cmd id="SET_COLOR">
-                    <p id="" editor="MCOLOR" />
-                </cmd>
-                <cmd id="SET_SAT">
-                    <p id="" editor="MCLSAT" init="GV2"/>
-                </cmd>
-                <cmd id="SET_BRI">
-                    <p id="" editor="MCLBRI" init="GV3" />
-                </cmd>
-                <cmd id="CLITEMP">
-                    <p id="" editor="MKELVIN" init="CLITEMP" />
-                </cmd>
-                <cmd id="SET_EFFECT">
-                    <p id="" editor="MEFFECT" init="GV4" />
-                </cmd>
-            </accepts>
-        </cmds>
-    </nodeDef>
-        <nodeDef id="MILIGHT_BRIDGE" nls="MGR">
-        <editors />
-        <sts>
-            <st id="ST" editor="MONOFF" />
-            <st id="GV1" editor="MCOLOR" />  <!-- Color -->
-            <st id="GV3" editor="MCLBRI" /> <!-- Brightness -->
-            <st id="GV4" editor="MEFFECT" />
-        </sts>
-        <cmds>
-            <sends />
-            <accepts>
-                <cmd id="DON" />
-                <cmd id="DOF" />
-                <cmd id="WHITE_MODE"/>
-                <cmd id="SET_COLOR">
-                    <p id="" editor="MCOLOR" />
-                </cmd>
                 <cmd id="SET_BRI">
                     <p id="" editor="MCLBRI" init="GV3" />
                 </cmd>
