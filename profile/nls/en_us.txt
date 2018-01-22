@@ -1,9 +1,8 @@
 # controller
-ND-AURORA-NAME = Aurora
 CMD-MILIGHT-DISCOVER-NAME = Re-Discover
 ST-AURORA-ST-NAME = Connected
 
-ND-AURORA-NAME = Milight Light
+ND-AURORA-NAME = Aurora Light
 ND-AURORA-ICON = Lamp
 ND-controller-NAME = Nanoleaf
 ND-controller-ICON = GenericCtl
