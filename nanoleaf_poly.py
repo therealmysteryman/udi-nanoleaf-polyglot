@@ -23,6 +23,9 @@ class Controller(polyinterface.Controller):
         self.name = 'NanoLeaf'
         self.initialized = False
         self.tries = 0
+        self.nano_ip = None
+        self.nano_token = None
+        
 
     def start(self):
         LOGGER.info('Started NanoLeaf for v2 NodeServer version %s', str(VERSION))
@@ -38,7 +41,7 @@ class Controller(polyinterface.Controller):
                     custom_data_token = True
                     LOGGER.info('Nano token found in the Database.')
             else:
-                LOGGER.info('Custom Data is not found in the DB')
+                LOGGER.cinfo('Custom Data is not found in the DB')
             
             if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
                 self.nano_ip = self.polyConfig['customParams']['ip']
