@@ -62,7 +62,7 @@ class Controller(polyinterface.Controller):
             
             if custom_data_ip == False or custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
-                data = { 'ip': self.nano_ip, 'token': self.nano_token }
+                data = { 'nano_ip': self.nano_ip, 'nano_token': self.nano_token }
                 self.saveCustomData(data)
             
             self.discover()
