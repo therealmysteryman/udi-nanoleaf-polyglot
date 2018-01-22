@@ -12,6 +12,10 @@ ST-GV3-NAME = Brightness
 ST-GV4-NAME = Effect
 ST-GV5-NAME = Status
 
+EFFECT_SEL-1 = Aqua
+EFFECT_SEL-2 = Azure
+EFFECT_SEL-3 = Beige
+
 CMD-DON-NAME = On
 CMD-DOF-NAME = Off
 CMD-SET_BRI-NAME = Set Brightness
