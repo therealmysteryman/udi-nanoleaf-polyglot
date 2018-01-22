@@ -63,7 +63,7 @@ class Controller(polyinterface.Controller):
         data = { 'bridge_ip': self.host, 'bridge_user': token }
         self.saveCustomData(data)
         
-        self.addNode(Aurora(self, self.address, 'aurora', 'aurora'))
+        self.addNode(AuroraNode(self, self.address, 'aurora', 'aurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -72,10 +72,10 @@ class Controller(polyinterface.Controller):
     commands = {}
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}]
     
-class Aurora(polyinterface.Node):
+class AuroraNode(polyinterface.Node):
 
     def __init__(self, controller, primary, address, name):
-        super(Aurora, self).__init__(controller, primary, address, name)
+        super(AuroraNode, self).__init__(controller, primary, address, name)
         
         self.my_aurora = Aurora(self.parent.host,self.parent.userid)
         self.timeout = 5.0
