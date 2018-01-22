@@ -65,7 +65,7 @@ class Controller(polyinterface.Controller):
                 data = { 'ip': self.nano_ip, 'token': self.nano_token }
                 self.saveCustomData(data)
             
-            return True
+            self.discover()
                                                             
         except Exception as ex:
             LOGGER.error('Error starting NanoLeaf NodeServer: %s', str(ex))
