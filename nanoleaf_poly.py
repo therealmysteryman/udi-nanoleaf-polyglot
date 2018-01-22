@@ -53,12 +53,12 @@ class Controller(polyinterface.Controller):
                 LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None :
-                try:
-                    self.nano_token = setup.generate_auth_token(self.nano_ip)
-                except Exception:
-                    LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
-                    return False      
+            #if self.nano_token is None :
+            try:
+                self.nano_token = setup.generate_auth_token(self.nano_ip)
+            except Exception:
+                LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
+                return False      
             
             if custom_data_ip == False or custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
