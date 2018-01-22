@@ -16,7 +16,7 @@
     
     <!-- Effect Selector -->
     <editor id="MEFFECT">
-        <range uom="100" min="1" max="9" step="1" prec="0" />
+        <range uom="27" nls="EFFECT_SEL" />
     </editor>
     
 </editors>
