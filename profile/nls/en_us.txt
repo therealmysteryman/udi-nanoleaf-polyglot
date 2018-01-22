@@ -1,0 +1,29 @@
+# controller
+ND-MILIGHTB-NAME = Milight
+CMD-MILIGHT-DISCOVER-NAME = Re-Discover
+ST-MILIGHT-ST-NAME = Connected
+
+ND-MILIGHT_LIGHT-NAME = Milight Light
+ND-MILIGHT_LIGHT-ICON = Lamp
+ND-MILIGHT_BRIDGE-NAME = Milight iBox
+ND-MILIGHT_BRIDGE-ICON = LampAndSwitch
+ND-controller-NAME = Milight Hub
+ND-controller-ICON = GenericCtl
+
+ST-GV1-NAME = Colour
+ST-GV2-NAME = Saturation
+ST-GV3-NAME = Brightness
+ST-GV4-NAME = Effect
+ST-GV5-NAME = Status
+ST-CLITEMP-NAME = Temperature
+
+
+CMD-DON-NAME = On
+CMD-DOF-NAME = Off
+CMD-SET_SAT-NAME = Set Saturation
+CMD-SET_BRI-NAME = Set Brightness
+CMD-CLITEMP-NAME = Set Color Temperature
+CMD-SET_COLOR-NAME = Set Colour
+CMD-SET_EFFECT-NAME = Set Effect
+CMD-WHITE_MODE-NAME = White Mode
+CMD-NIGHT_MODE-NAME = Night Mode
