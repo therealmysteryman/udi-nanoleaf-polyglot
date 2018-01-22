@@ -53,12 +53,12 @@ class Controller(polyinterface.Controller):
                 LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            #if self.nano_token is None :
-            try:
-                self.nano_token = setup.generate_auth_token(self.nano_ip)
-            except Exception:
-                LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
-                return False      
+            if self.nano_token is None :
+                try:
+                    self.nano_token = setup.generate_auth_token(self.nano_ip)
+                except Exception:
+                    LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
+                    return False      
             
             if custom_data_ip == False or custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
@@ -85,7 +85,7 @@ class Controller(polyinterface.Controller):
         time.sleep(1)
         
         if self.nano_ip is not None and self.nano_token is None :
-            self.addNode(AuroraNode(self, self.address, 'aurora', 'Aurora'))
+            self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -103,8 +103,7 @@ class AuroraNode(polyinterface.Node):
         self.timeout = 5.0
             
     def start(self):
-        pass
-        #self.query()                                             
+        pass                                           
 
     def setOn(self, command):
         self.my_aurora.on = True
@@ -128,12 +127,6 @@ class AuroraNode(polyinterface.Node):
        
     def query(self):
         self.reportDrivers()
-                                                                
-        #if self.my_aurora.on :
-        #    self.setDriver('ST', 100)
-        #else:
-        #    self.setDriver('ST', 0)   
-        #self.setDriver('GV3', self.my_aurora.brightness)  
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
@@ -142,8 +135,8 @@ class AuroraNode(polyinterface.Node):
     commands = {
                     'DON': setOn,
                     'DOF': setOff,
-                    "SET_BRI": setBrightness,
-                    "SET_EFFECT": setEffect
+                    'SET_BRI': setBrightness,
+                    'SET_EFFECT': setEffect
                 }
     
 if __name__ == "__main__":
