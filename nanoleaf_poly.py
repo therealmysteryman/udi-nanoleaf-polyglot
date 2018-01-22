@@ -61,15 +61,14 @@ class Controller(polyinterface.Controller):
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
-        LOGGER.error(self.host)
-        ipAddressList = setup.find_auroras()
-        
+        #LOGGER.error(self.host)
+        #ipAddressList = setup.find_auroras()
         #token = setup.generate_auth_token("172.16.50.27")
         #self.userid = token
         #data = { 'bridge_ip': self.host, 'bridge_user': token }
         #self.saveCustomData(data)
         
-        self.addNode(AuroraNode(self, self.address, 'aurora', 'aurora'))
+        self.addNode(AuroraNode(self, self.address, 'aurora', 'Aurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -83,7 +82,7 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         
-        self.my_aurora = Aurora(self.parent.host,self.parent.userid)
+        #self.my_aurora = Aurora(self.parent.host,self.parent.userid)
         self.timeout = 5.0
             
     def start(self):
