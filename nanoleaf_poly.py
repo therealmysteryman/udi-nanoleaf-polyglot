@@ -94,7 +94,7 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         
-        self.my_aurora = Aurora(self.nano_ip,self.nano_token)
+        self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self.timeout = 5.0
             
     def start(self):
