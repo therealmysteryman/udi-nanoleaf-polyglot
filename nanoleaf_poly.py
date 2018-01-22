@@ -33,7 +33,12 @@ class Controller(polyinterface.Controller):
                 self.host = self.polyConfig['customParams']['host']
             else:
                 self.host = ""
-
+            
+            if 'token' in self.polyConfig['customParams']:
+                self.userid = self.polyConfig['customParams']['token']
+            else:
+                self.userid = ""
+                
             if self.host == "":
                 LOGGER.error('MiLight requires \'host\' parameters to be specified in custom configuration.')
                 self.setDriver('ST', o)
@@ -58,14 +63,11 @@ class Controller(polyinterface.Controller):
         time.sleep(1)
         LOGGER.error(self.host)
         ipAddressList = setup.find_auroras()
-        LOGGER.error(ipAddressList)
-        token = setup.generate_auth_token("172.16.50.27")
-        LOGGER.error(token)
         
-        self.userid = token
-        
-        data = { 'bridge_ip': self.host, 'bridge_user': token }
-        self.saveCustomData(data)
+        #token = setup.generate_auth_token("172.16.50.27")
+        #self.userid = token
+        #data = { 'bridge_ip': self.host, 'bridge_user': token }
+        #self.saveCustomData(data)
         
         self.addNode(AuroraNode(self, self.address, 'aurora', 'aurora'))
 
@@ -81,7 +83,7 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         
-        self.my_aurora = Aurora(self.parent.host,self.parent.userid)
+        self.my_aurora = AuroraNode(self.parent.host,self.parent.userid)
         self.timeout = 5.0
             
     def start(self):
