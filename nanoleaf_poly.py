@@ -146,7 +146,7 @@ class AuroraNode(polyinterface.Node):
     
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
-               {'driver': 'GV4', 'value': 1, 'uom': 100}]
+               {'driver': 'GV4', 'value': 1, 'uom': 25}]
     id = 'AURORA'
     commands = {
                     'DON': setOn,
