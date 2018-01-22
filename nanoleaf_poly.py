@@ -25,8 +25,8 @@ class Controller(polyinterface.Controller):
         self.tries = 0
         self.nano_ip = None
         self.nano_token = None
+        self.requestNewToken = 0
         
-
     def start(self):
         LOGGER.info('Started NanoLeaf for v2 NodeServer version %s', str(VERSION))
         try:
@@ -51,11 +51,19 @@ class Controller(polyinterface.Controller):
             if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
                 self.nano_token = self.polyConfig['customParams']['token']
                 LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
+            if 'requestNewToken' in self.polyConfig['customParams']:
+                self.requestNewToken = self.polyConfig['customParams']['requestNewToken']
+       
+            if self.nano_ip is None:
+                LOGGER.error('Need to have ip address in custom param ip')
+                return False
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None :
+            if self.nano_token is None or self.requestNewToken == 1 :
                 try:
+                    LOGGER.info('Requesting Token')
                     self.nano_token = setup.generate_auth_token(self.nano_ip)
+                    custom_data_token = False
                 except Exception:
                     LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
                     return False      
@@ -84,8 +92,8 @@ class Controller(polyinterface.Controller):
     def discover(self, *args, **kwargs):
         time.sleep(1)
         
-        #if self.nano_ip is not None and self.nano_token is None :
-        self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
+        if self.nano_ip is not None and self.nano_token not is None :
+            self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
