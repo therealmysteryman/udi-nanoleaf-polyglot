@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 """
-This is a NodeServer for MiLight Protocol V6 written by automationgeek (Jean-Francois Tremblay) 
+This is a NodeServer for Nanoleaf written by automationgeek (Jean-Francois Tremblay) 
 based on the NodeServer template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com
-MiLight functionality based on 'Milight-Wifi-Bridge-3.0-Python-Library' project by QuentinCG (https://github.com/QuentinCG/Milight-Wifi-Bridge-3.0-Python-Library)
 """
 
 import polyinterface
@@ -192,85 +191,6 @@ class MiLightLight(polyinterface.Node):
                     "SET_EFFECT": setEffect,
                     "WHITE_MODE": setWhiteMode,
                     "NIGHT_MODE": setNightMode
-                }
-    
-class MiLightBridge(polyinterface.Node):
-
-    def __init__(self, controller, primary, address, name):
-
-        super(MiLightBridge, self).__init__(controller, primary, address, name)
-        self.host = self.parent.host
-        self.port = self.parent.port
-        self.timeout = 5.0
-            
-    def start(self):
-        pass
-
-    def setOn(self, command):
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.turnOnWifiBridgeLamp()
-        myMilight.close()
-        self.setDriver('ST', 100)
-
-    def setOff(self, command):
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.turnOffWifiBridgeLamp()
-        myMilight.close()
-        self.setDriver('ST', 0)
-        
-    def setColor(self, command):
-        query = command.get('query')
-        intColor = int(command.get('value'))
-        
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.setColorBridgeLamp(color=intColor) 
-        myMilight.close()
-        self.setDriver('GV1', intColor)
-        
-    def setBrightness(self, command):
-        query = command.get('query')
-        intBri = int(command.get('value'))
-        
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.setBrightnessBridgeLamp(brightness=intBri) 
-        myMilight.close()
-        self.setDriver('GV3', intBri)
-        
-    def setEffect(self, command):
-        query = command.get('query')
-        intEffect = int(command.get('value'))
-        
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.setDiscoModeBridgeLamp(discoMode=intEffect)
-        myMilight.close()
-        self.setDriver('GV4', intEffect)
-        
-    def setWhiteMode(self, command):
-        myMilight = MilightWifiBridge()
-        myMilight.setup(ip=self.host, port=self.port, timeout_sec=self.timeout)
-        myMilight.setWhiteModeBridgeLamp()
-        myMilight.close()
-  
-    def query(self):
-        self.reportDrivers()
-        
-    drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
-               {'driver': 'GV1', 'value': 0, 'uom': 100},
-               {'driver': 'GV3', 'value': 0, 'uom': 51},
-               {'driver': 'GV4', 'value': 1, 'uom': 100}]
-    id = 'MILIGHT_BRIDGE'
-    commands = {
-                    'DON': setOn,
-                    'DOF': setOff,
-                    "SET_COLOR": setColor,
-                    "SET_BRI": setBrightness,
-                    "SET_EFFECT": setEffect,
-                    "WHITE_MODE": setWhiteMode
                 }
     
 if __name__ == "__main__":
