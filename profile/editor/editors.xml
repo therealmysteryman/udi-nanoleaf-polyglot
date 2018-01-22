@@ -9,17 +9,8 @@
         <range uom="78" subset="0,100" />
     </editor>
     
-    <!-- Color 0 to 255 Value -->
-    <editor id="MCOLOR">
-        <range uom="100" min="0" max="255" step="1" prec="0" />
-    </editor>
-    
     <!-- Brightness Editor -->
     <editor id="MCLBRI">
-        <range uom="51" min="1" max="100" prec="0" step="1" />
-    </editor>
-
-    <editor id="MCLSAT">
         <range uom="51" min="1" max="100" prec="0" step="1" />
     </editor>
     
@@ -28,9 +19,4 @@
         <range uom="100" min="1" max="9" step="1" prec="0" />
     </editor>
     
-    <!-- Kelvin Editor -->
-    <editor id="MKELVIN">
-        <range uom="26" min="2000" max="6500" prec="0" step="1"  />
-    </editor>
-        
 </editors>
