@@ -1,21 +1,21 @@
 {
-    "name": "MiLight",
-    "docs": "http://www.limitlessled.com/dev/",
+    "name": "NanoLeaf",
+    "docs": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
     "type": "python3",
-    "executable": "milight_poly.py",
+    "executable": "nanoleaf_poly.py",
     "install": "install.sh",
     "shortPoll": "15",
     "longPoll": "60",
-    "description": "Connect Milight V6 Protocol Lighting system to the ISY994.",
-    "notice": "https://github.com/therealmysteryman/udi-milight-polyglot/blob/master/LICENSE",
+    "description": "Connect Nanoleaf to the ISY994.",
+    "notice": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE",
     "credits": [
         {
-            "title": "udi-milight-poly: A Polyglot v2 interface to Milight",
+            "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf",
             "author": "Jean-Francois Tremblay",
-            "version": "0.1.0",
-            "date": "Jan 20, 2018",
-            "source": "https://github.com/therealmysteryman/udi-milight-polyglot",
-            "license": "https://github.com/therealmysteryman/udi-milight-polyglot/blob/master/LICENSE"
+            "version": "0.0.0",
+            "date": "Jan 21, 2018",
+            "source": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
+            "license": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE"
         },
 	{
             "title": "udi-poly-template-python: A Polyglot v2 Poly template",
@@ -26,12 +26,12 @@
             "license": "https://raw.githubusercontent.com/Einstein42/udi-poly-template-python/master/LICENSE"
         },
 	{
-            "title": "Milight Wifi Bridge 3.0 Python library",
-            "author": "Quentin Comte-Gaz",
+            "title": "A python interface for Nanoleaf Aurora lighting",
+            "author": "Software2",
             "version": "1.0.0",
-            "date": "April 1, 2017",
-            "source": "https://github.com/QuentinCG/Milight-Wifi-Bridge-3.0-Python-Library",
-            "license": "https://github.com/QuentinCG/Milight-Wifi-Bridge-3.0-Python-Library/blob/master/LICENSE"
+            "date": "August 20, 2017",
+            "source": "https://github.com/software-2/nanoleaf",
+            "license": "https://github.com/software-2/nanoleaf/blob/master/LICENSE"
         }
     ]
 }
