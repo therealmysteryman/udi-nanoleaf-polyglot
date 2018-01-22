@@ -1,6 +1,6 @@
 # Nanoleaf Polyglot V2 Node Server
 
-This Poly provides an interface between Nanoleaf and Polyglot v2 server. 
+This Poly provides an interface between NanoLeaf and Polyglot v2 server. 
 
 *In Development
 
