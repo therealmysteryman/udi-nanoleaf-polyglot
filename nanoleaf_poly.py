@@ -63,7 +63,7 @@ class Controller(polyinterface.Controller):
                 try:
                     LOGGER.info('Requesting Token')
                     self.nano_token = setup.generate_auth_token(self.nano_ip)
-                     LOGGER.info(self.nano_token)
+                    LOGGER.info(self.nano_token)
                     custom_data_token = False
                 except Exception:
                     LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
