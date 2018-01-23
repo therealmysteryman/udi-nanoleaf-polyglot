@@ -87,7 +87,7 @@ class Controller(polyinterface.Controller):
             return False
 
     def shortPoll(self):
-        self.query()
+        pass
 
     def longPoll(self):
         pass
@@ -116,7 +116,10 @@ class AuroraNode(polyinterface.Node):
             
     def start(self):
         self.query()                                          
-
+        
+    def shortPoll(self): 
+        self.query()  
+        
     def setOn(self, command):
         self.my_aurora.on = True
         self.setDriver('ST', 100)
