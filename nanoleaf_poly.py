@@ -217,7 +217,7 @@ class AuroraNode(polyinterface.Node):
         if intArrSize is None or intArrSize == 0 :
             intArrSize = 1
         
-        with open("/profile/editor/editors.template") as f:
+        with open("profile/editor/editors.template") as f:
             with open("profile/editor/editors.xml", "w+") as f1:
                 for line in f:
                     f1.write(line) 
@@ -225,7 +225,7 @@ class AuroraNode(polyinterface.Node):
             f1.close()
         f.close()
                   
-        with open("/profile/editor/editors.xml", "a") as myfile:
+        with open("profile/editor/editors.xml", "a") as myfile:
             myfile.write("\t<editor id=\"MEFFECT\">"  + "\n")
             myfile.write("\t\t<range uom=\"25\" subset=\"1-"+ str(intArrSize) + "\" nls=\"EFFECT_SEL\" />"  + "\n")
             myfile.write("\t</editor>" + "\n")
