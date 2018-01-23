@@ -17,7 +17,7 @@ LOGGER = polyinterface.LOGGER
 SERVERDATA = json.load(open('server.json'))
 VERSION = SERVERDATA['credits'][0]['version']
 
-EFFECT = ['', 'Flames', 'Forest', 'Nemo', 'Northern Lights', 'Romantic', 'Snowfall', 'Fireworks and Firecrackers']
+# EFFECT = ['', 'Flames', 'Forest', 'Nemo', 'Northern Lights', 'Romantic', 'Snowfall', 'Fireworks and Firecrackers']
 
 class Controller(polyinterface.Controller):
 
@@ -113,12 +113,15 @@ class Controller(polyinterface.Controller):
 class AuroraNode(polyinterface.Node):
 
     def __init__(self, controller, primary, address, name):
-        super(AuroraNode, self).__init__(controller, primary, address, name)
-        self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
-        self.query()
         self.do_poll = True
         self.timeout = 5.0
-            
+        self.arrEffects = None
+     
+        super(AuroraNode, self).__init__(controller, primary, address, name)
+        self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
+        self._getEffetsList()
+        self.query()
+
     def start(self):
         self.query()                                          
         
@@ -137,12 +140,15 @@ class AuroraNode(polyinterface.Node):
 
     def setEffect(self, command):
         intEffect = int(command.get('value'))
-        # arrEffects = self.my_aurora.effects_list
-        # LOGGER.info(arrEffects)
-        self.my_aurora.effect = EFFECT[intEffect]
+        LOGGER.info(self.arrEffects)
+        self.my_aurora.effect = self.arrEffects[intEffect+1]
         self.setDriver('GV4', intEffect)
-    
-    def updateValue(self):
+      
+    def query(self):
+        self._updateValue()
+        self.reportDrivers()
+
+    def _updateValue(self):
         if self.my_aurora.on is True:
             self.setDriver('ST', 100)
         else:
@@ -150,10 +156,23 @@ class AuroraNode(polyinterface.Node):
         self.setDriver('GV3', self.my_aurora.brightness )
         self.setDriver('GV4', EFFECT.index(self.my_aurora.effect))
     
-    def query(self):
-        self.updateValue()
-        self.reportDrivers()
-
+    def _saveEffetsList(self)
+        self.arrEffects = self.my_aurora.effects_list
+        
+        #Write effectLists to Json
+        try:
+            with open("effectLists.json", "w") as outfile:
+                json.dump(arrEffects, outfile)
+        except IOError:
+            LOGGER.error('Unable to write effectLists.json')
+                
+    def _getEffetsList(self)
+        try:
+            with open("effectLists.json", "r") as infile:
+                self.arrEffects = json.load(infile)
+         except IOError:
+            _saveEffetsList(self)
+        
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 25}]
