@@ -156,7 +156,7 @@ class AuroraNode(polyinterface.Node):
         self.setDriver('GV3', self.my_aurora.brightness )
         self.setDriver('GV4', EFFECT.index(self.my_aurora.effect))
     
-    def _saveEffetsList(self)
+    def _saveEffetsList(self):
         self.arrEffects = self.my_aurora.effects_list
         
         #Write effectLists to Json
@@ -166,7 +166,7 @@ class AuroraNode(polyinterface.Node):
         except IOError:
             LOGGER.error('Unable to write effectLists.json')
                 
-    def _getEffetsList(self)
+    def _getEffetsList(self):
         try:
             with open("effectLists.json", "r") as infile:
                 self.arrEffects = json.load(infile)
