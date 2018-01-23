@@ -172,10 +172,10 @@ class AuroraNode(polyinterface.Node):
             self._saveEffetsList()
             
     def _write_nls_profile(self):
-        with open("en_us.txt", "w") as myfile:
+        with open("en_us.txt", "a") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
-                myfile.write("EFFECT_SEL_" + str(intCounter) + " " + x)
+                myfile.write("EFFECT_SEL_" + str(intCounter) + " = " + x + "\n")
                 intCounter = intCounter + 1
                 
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
