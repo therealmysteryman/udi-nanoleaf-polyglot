@@ -171,7 +171,7 @@ class AuroraNode(polyinterface.Node):
             with open("effectLists.json", "r") as infile:
                 self.arrEffects = json.load(infile)
         except IOError:
-            _saveEffetsList()
+            self._saveEffetsList()
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
