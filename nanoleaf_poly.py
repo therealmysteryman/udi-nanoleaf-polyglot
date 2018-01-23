@@ -138,8 +138,7 @@ class AuroraNode(polyinterface.Node):
 
     def setEffect(self, command):
         intEffect = int(command.get('value'))
-        LOGGER.info(self.arrEffects)
-        self.my_aurora.effect = self.arrEffects[intEffect+1]
+        self.my_aurora.effect = self.arrEffects[intEffect-1]
         self.setDriver('GV4', intEffect)
       
     def query(self):
