@@ -209,7 +209,7 @@ class AuroraNode(polyinterface.Node):
         with open("profile/nls/en_us.txt", "a") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
-                myfile.write("EFFECT_SEL_" + str(intCounter) + " = " + x + "\n")
+                myfile.write("EFFECT_SEL-" + str(intCounter) + " = " + x + "\n")
                 intCounter = intCounter + 1
         
         self.parent._write_profile_zip()
