@@ -22,6 +22,7 @@
             <accepts>
                 <cmd id="DON" />
                 <cmd id="DOF" />
+                <cmd id="SET_PROFILE" />
                 <cmd id="SET_BRI">
                     <p id="" editor="MCLBRI" init="GV3" />
                 </cmd>
