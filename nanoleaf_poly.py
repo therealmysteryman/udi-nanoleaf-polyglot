@@ -112,11 +112,12 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
+        self.query()                                          
         self.timeout = 5.0
             
     def start(self):
         self.query()                                          
-   
+        
     def setOn(self, command):
         self.my_aurora.on = True
         self.setDriver('ST', 100)
@@ -136,19 +137,19 @@ class AuroraNode(polyinterface.Node):
         # LOGGER.info(arrEffects)
         self.my_aurora.effect = EFFECT[intEffect]
         self.setDriver('GV4', intEffect)
-       
-    def query(self):
-        self.reportDrivers()
-        
-        # Current On Off Status
+    
+    def updateValue(self):
         if self.my_aurora.on is True:
             self.setDriver('ST', 100)
         else:
             self.setDriver('ST', 0)
-            
         self.setDriver('GV3', self.my_aurora.brightness )
         self.setDriver('GV4', EFFECT.index(self.my_aurora.effect))
     
+    def query(self):
+        self.reportDrivers()
+        self.updateValue()
+
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 25}]
