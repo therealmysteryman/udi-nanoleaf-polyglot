@@ -116,10 +116,7 @@ class AuroraNode(polyinterface.Node):
             
     def start(self):
         self.query()                                          
-        
-    def shortPoll(self): 
-        self.query()  
-        
+   
     def setOn(self, command):
         self.my_aurora.on = True
         self.setDriver('ST', 100)
@@ -144,7 +141,7 @@ class AuroraNode(polyinterface.Node):
         self.reportDrivers()
         
         # Current On Off Status
-        if self.my_aurora.on == True:
+        if self.my_aurora.on is True:
             self.setDriver('ST', 100)
         else:
             self.setDriver('ST', 0)
