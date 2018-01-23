@@ -2,7 +2,8 @@
 
 """
 This is a NodeServer for Nanoleaf written by automationgeek (Jean-Francois Tremblay) 
-based on the NodeServer template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com
+based on the NodeServer template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com.
+Using this Python Library to control NanoLeaf by Software2 https://github.com/software-2/nanoleaf
 """
 
 import polyinterface
