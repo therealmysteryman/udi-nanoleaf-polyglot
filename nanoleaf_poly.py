@@ -141,7 +141,7 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
-        self._write_nls_profile()
+        self.rebuildProfile()
         self.query()
 
     def start(self):
@@ -194,7 +194,7 @@ class AuroraNode(polyinterface.Node):
         except IOError:
             self._saveEffetsList()
             
-    def _write_nls_profile(self):
+    def rebuildProfile(self):
         
         # Build File NLS from Template
         with open("profile/nls/en_us.template") as f:
@@ -243,6 +243,7 @@ class AuroraNode(polyinterface.Node):
     commands = {
                     'DON': setOn,
                     'DOF': setOff,
+                    'SET_PROFILE' : rebuildProfile,
                     'SET_BRI': setBrightness,
                     'SET_EFFECT': setEffect
                 }
