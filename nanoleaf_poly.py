@@ -10,6 +10,8 @@ import polyinterface
 import time
 import json
 import sys
+import os
+import zipfile
 from nanoleaf import setup
 from nanoleaf import Aurora
 
@@ -96,6 +98,19 @@ class Controller(polyinterface.Controller):
         for node in self.nodes:
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
+
+    def _write_profile_zip(self):
+        src = 'profile'
+        abs_src = os.path.abspath(src)
+        with zipfile.ZipFile('profile.zip', 'w') as zf:
+            for dirname, subdirs, files in os.walk(src):
+                for filename in files:
+                    if filename.endswith('.xml') or filename.endswith('txt'):
+                        absname = os.path.abspath(os.path.join(dirname, filename))
+                        arcname = absname[len(abs_src) + 1:]
+                        LOGGER.info('write_profile_zip: %s as %s' % (os.path.join(dirname, filename),arcname))
+                        zf.write(absname, arcname)
+        zf.close()
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
@@ -186,7 +201,9 @@ class AuroraNode(polyinterface.Node):
             for x in self.arrEffects:  
                 myfile.write("EFFECT_SEL_" + str(intCounter) + " = " + x + "\n")
                 intCounter = intCounter + 1
-                
+        
+        self.parent._write_profile_zip()
+        
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 25}]
