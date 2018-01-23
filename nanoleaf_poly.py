@@ -16,6 +16,8 @@ LOGGER = polyinterface.LOGGER
 SERVERDATA = json.load(open('server.json'))
 VERSION = SERVERDATA['credits'][0]['version']
 
+EFFECT = ['Flames', 'Forest', 'Nemo', 'Northern Lights', 'Romantic', 'Snowfall', 'Fireworks and Firecrackers']
+
 class Controller(polyinterface.Controller):
 
     def __init__(self, polyglot):
@@ -128,9 +130,9 @@ class AuroraNode(polyinterface.Node):
 
     def setEffect(self, command):
         intEffect = int(command.get('value'))
-        arrEffects = self.my_aurora.effects_list
-        LOGGER.info(arrEffects)
-        self.my_aurora.effect = arrEffects[intEffect]
+        # arrEffects = self.my_aurora.effects_list
+        # LOGGER.info(arrEffects)
+        self.my_aurora.effect = EFFECT[intEffect]
         self.setDriver('GV4', intEffect)
        
     def query(self):
