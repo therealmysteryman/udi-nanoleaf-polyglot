@@ -35,40 +35,42 @@ class Controller(polyinterface.Controller):
             custom_data_ip = False
             custom_data_token = False
             
-            if 'customData' in self.polyConfig:
-                if 'nano_ip' in self.polyConfig['customData']:
-                    self.nano_ip = self.polyConfig['customData']['nano_ip']
-                    custom_data_ip = True
-                    LOGGER.info('Nano IP found in the Database: {}'.format(self.nano_ip))
-                if 'nano_token' in self.polyConfig['customData']:
-                    self.nano_token = self.polyConfig['customData']['nano_token']
-                    custom_data_token = True
-                    LOGGER.info('Nano token found in the Database.')
-            else:
-                LOGGER.cinfo('Custom Data is not found in the DB')
-            
-            if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
-                self.nano_ip = self.polyConfig['customParams']['ip']
-                LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
-            if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
-                self.nano_token = self.polyConfig['customParams']['token']
-                LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
             if 'requestNewToken' in self.polyConfig['customParams']:
-                self.requestNewToken = self.polyConfig['customParams']['requestNewToken']
+                self.requestNewToken = self.polyConfig['customParams']['requestNewToken']    
+            
+            if self.requestNewToken == 1:
+                if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
+                    self.nano_ip = self.polyConfig['customParams']['ip']
+                    LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
+                if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
+                    self.nano_token = self.polyConfig['customParams']['token']
+                    LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
+            else:
+                if 'customData' in self.polyConfig:
+                    if 'nano_ip' in self.polyConfig['customData']:
+                        self.nano_ip = self.polyConfig['customData']['nano_ip']
+                        custom_data_ip = True
+                        LOGGER.info('Nano IP found in the Database: {}'.format(self.nano_ip))
+                    if 'nano_token' in self.polyConfig['customData']:
+                        self.nano_token = self.polyConfig['customData']['nano_token']
+                        custom_data_token = True
+                        LOGGER.info('Nano token found in the Database.')
+                else:
+                    LOGGER.cinfo('Custom Data is not found in the DB')
        
             if self.nano_ip is None:
                 LOGGER.error('Need to have ip address in custom param ip')
+                self.setDriver('ST', 0)
                 return False
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None or self.requestNewToken == 1 :
-                try:
-                    LOGGER.info('Requesting Token')
-                    self.nano_token = setup.generate_auth_token(self.nano_ip)
-                    LOGGER.info(self.nano_token)
-                    custom_data_token = False
-                except Exception:
+            if self.nano_token is None
+                LOGGER.debug('Requesting Token')
+                self.nano_token = setup.generate_auth_token(self.nano_ip)
+                LOGGER.debug(self.nano_token)
+                if self.nano_token is None:
                     LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
+                    self.setDriver('ST', 0)
                     return False      
             
             if custom_data_ip == False or custom_data_token == False:
@@ -76,17 +78,19 @@ class Controller(polyinterface.Controller):
                 data = { 'nano_ip': self.nano_ip, 'nano_token': self.nano_token }
                 self.saveCustomData(data)
             
+            self.setDriver('ST', 1)
             self.discover()
                                                             
         except Exception as ex:
             LOGGER.error('Error starting NanoLeaf NodeServer: %s', str(ex))
+            self.setDriver('ST', 0)
             return False
 
     def shortPoll(self):
         pass
 
     def longPoll(self):
-        self.query()
+        pass
 
     def query(self):
         for node in self.nodes:
@@ -94,9 +98,7 @@ class Controller(polyinterface.Controller):
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
-        
-        if self.nano_ip is not None and self.nano_token is not None :
-            self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
+        self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
 
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
@@ -145,7 +147,7 @@ class AuroraNode(polyinterface.Node):
             self.setDriver('ST', 0)
             
         self.setDriver('GV3', self.my_aurora.brightness )
-        self.setDriver('GV4', self.my_aurora.effect)
+        self.setDriver('GV4', EFFECT.index(self.my_aurora.effect))
     
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
