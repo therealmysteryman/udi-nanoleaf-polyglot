@@ -111,11 +111,11 @@ class Controller(polyinterface.Controller):
 class AuroraNode(polyinterface.Node):
 
     def __init__(self, controller, primary, address, name):
+        super(AuroraNode, self).__init__(controller, primary, address, name)
         self.do_poll = True
         self.timeout = 5.0
         self.arrEffects = None
-     
-        super(AuroraNode, self).__init__(controller, primary, address, name)
+        
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
         self.query()
@@ -174,6 +174,7 @@ class AuroraNode(polyinterface.Node):
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 25}]
+    
     id = 'AURORA'
     commands = {
                     'DON': setOn,
