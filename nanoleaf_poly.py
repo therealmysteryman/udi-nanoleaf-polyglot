@@ -118,7 +118,7 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
-        self._write_nls_profile
+        self._write_nls_profile()
         self.query()
 
     def start(self):
@@ -172,7 +172,7 @@ class AuroraNode(polyinterface.Node):
             self._saveEffetsList()
             
     def _write_nls_profile(self):
-        with open("en_us.txt", "a") as myfile:
+        with open("en_us.txt", "w") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
                 myfile.write("EFFECT_SEL_" + str(intCounter) + " " + x)
