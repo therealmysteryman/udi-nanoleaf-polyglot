@@ -94,7 +94,8 @@ class Controller(polyinterface.Controller):
 
     def query(self):
         for node in self.nodes:
-            self.nodes[node].reportDrivers()
+            self.nodes[node].query()
+        self.reportDrivers()
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
