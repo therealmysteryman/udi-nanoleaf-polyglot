@@ -118,6 +118,7 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
+        self._write_nls_profile
         self.query()
 
     def start(self):
@@ -133,7 +134,7 @@ class AuroraNode(polyinterface.Node):
         
     def setBrightness(self, command):
         intBri = int(command.get('value'))
-        self.my_aurora.brightness =   intBri                                                   
+        self.my_aurora.brightness = intBri                                                   
         self.setDriver('GV3', intBri)
 
     def setEffect(self, command):
@@ -162,14 +163,21 @@ class AuroraNode(polyinterface.Node):
                 json.dump(self.arrEffects, outfile)
         except IOError:
             LOGGER.error('Unable to write effectLists.json')
-                
+              
     def _getEffetsList(self):
         try:
             with open("effectLists.json", "r") as infile:
                 self.arrEffects = json.load(infile)
         except IOError:
             self._saveEffetsList()
-        
+    
+     def _write_nls_profile(self)
+        with open("en_us.txt", "a") as myfile:
+            intCounter = 1
+            for x in self.arrEffects:  
+                myfile.write("EFFECT_SEL_" + str(intCounter) + " " + x)
+                intCounter = intCounter + 1
+                
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
                {'driver': 'GV4', 'value': 1, 'uom': 25}]
