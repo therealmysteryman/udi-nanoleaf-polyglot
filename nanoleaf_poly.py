@@ -197,7 +197,7 @@ class AuroraNode(polyinterface.Node):
         except IOError:
             self._saveEffetsList()
     
-    def _BuildProfile(self, command):
+    def _BuildProfile(self):
         
         # Build File NLS from Template
         with open("profile/nls/en_us.template") as f:
