@@ -14,9 +14,4 @@
         <range uom="51" min="1" max="100" prec="0" step="1" />
     </editor>
     
-    <!-- Effect Selector -->
-    <editor id="MEFFECT">
-        <range uom="25" subset="1-7" nls="EFFECT_SEL" />
-    </editor>
-
 </editors>
