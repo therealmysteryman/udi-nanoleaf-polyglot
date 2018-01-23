@@ -112,6 +112,14 @@ class Controller(polyinterface.Controller):
                         zf.write(absname, arcname)
         zf.close()
 
+    def _install_profile(self):
+        try:
+            self.poly.installprofile()
+        except:
+            LOGGER.error("Install Profile Error")
+            return False
+        return True
+        
     def discover(self, *args, **kwargs):
         time.sleep(1)
         self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
@@ -194,6 +202,8 @@ class AuroraNode(polyinterface.Node):
                 for line in f:
                     f1.write(line) 
                 f1.write("\n") 
+            f1.close()
+        f.close()
                 
         # Add Effect to Profile        
         with open("profile/nls/en_us.txt", "a") as myfile:
@@ -203,6 +213,7 @@ class AuroraNode(polyinterface.Node):
                 intCounter = intCounter + 1
         
         self.parent._write_profile_zip()
+        self.parent._install_profile()
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
