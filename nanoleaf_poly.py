@@ -129,9 +129,10 @@ class AuroraNode(polyinterface.Node):
 
     def setEffect(self, command):
         query = command.get('query')
-        strEffect = str(command.get('value')).strip()
-        self.my_aurora.effect = strEffect
-        self.setDriver('GV4', strEffect)
+        intEffect = command.get('value')
+        strLabel = command.get('label')
+        self.my_aurora.effect = strLabel
+        self.setDriver('GV4', intEffect)
        
     def query(self):
         self.reportDrivers()
