@@ -93,9 +93,10 @@ class Controller(polyinterface.Controller):
         self.query()
 
     def query(self):
-        for node in self.nodes:
-            self.nodes[node].query()
         self.reportDrivers()
+        for node in self.nodes:
+            if self.nodes[node].address != self.address and self.nodes[node].do_poll:
+                self.nodes[node].query()
 
     def discover(self, *args, **kwargs):
         time.sleep(1)
@@ -113,7 +114,8 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
-        self.query()                                          
+        self.query()
+        self.do_poll = True
         self.timeout = 5.0
             
     def start(self):
