@@ -172,7 +172,16 @@ class AuroraNode(polyinterface.Node):
             self._saveEffetsList()
             
     def _write_nls_profile(self):
-        with open("en_us.txt", "a") as myfile:
+        
+        # Build File from Template
+        with open("profile/nls/en_us.template") as f:
+            with open("profile/nls/en_us.txt", "w+") as f1:
+                for line in f:
+                    f1.write(line) 
+                f1.write("\n") 
+                
+        # Add Effect to Profile        
+        with open("profile/nls/en_us.txt", "a") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
                 myfile.write("EFFECT_SEL_" + str(intCounter) + " = " + x + "\n")
