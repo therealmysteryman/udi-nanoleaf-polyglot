@@ -171,7 +171,7 @@ class AuroraNode(polyinterface.Node):
         except IOError:
             self._saveEffetsList()
     
-     def _write_nls_profile(self)
+     def _write_nls_profile(self):
         with open("en_us.txt", "a") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
