@@ -17,8 +17,6 @@ LOGGER = polyinterface.LOGGER
 SERVERDATA = json.load(open('server.json'))
 VERSION = SERVERDATA['credits'][0]['version']
 
-# EFFECT = ['', 'Flames', 'Forest', 'Nemo', 'Northern Lights', 'Romantic', 'Snowfall', 'Fireworks and Firecrackers']
-
 class Controller(polyinterface.Controller):
 
     def __init__(self, polyglot):
