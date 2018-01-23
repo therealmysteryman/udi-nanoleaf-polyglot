@@ -64,7 +64,7 @@ class Controller(polyinterface.Controller):
                 return False
             
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None
+            if self.nano_token is None:
                 LOGGER.debug('Requesting Token')
                 self.nano_token = setup.generate_auth_token(self.nano_ip)
                 LOGGER.debug(self.nano_token)
