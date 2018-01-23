@@ -141,7 +141,7 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
-        self.rebuildProfile()
+        self._BuildProfile()
         self.query()
 
     def start(self):
@@ -164,7 +164,10 @@ class AuroraNode(polyinterface.Node):
         intEffect = int(command.get('value'))
         self.my_aurora.effect = self.arrEffects[intEffect-1]
         self.setDriver('GV4', intEffect)
-      
+    
+    def setProfile(self, command):
+        self._BuildProfile()
+    
     def query(self):
         self._updateValue()
         self.reportDrivers()
@@ -193,8 +196,8 @@ class AuroraNode(polyinterface.Node):
                 self.arrEffects = json.load(infile)
         except IOError:
             self._saveEffetsList()
-            
-    def rebuildProfile(self, command):
+    
+    def _BuildProfile(self, command):
         
         # Build File NLS from Template
         with open("profile/nls/en_us.template") as f:
@@ -243,7 +246,7 @@ class AuroraNode(polyinterface.Node):
     commands = {
                     'DON': setOn,
                     'DOF': setOff,
-                    'SET_PROFILE' : rebuildProfile,
+                    'SET_PROFILE' : setProfile,
                     'SET_BRI': setBrightness,
                     'SET_EFFECT': setEffect
                 }
