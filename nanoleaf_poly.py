@@ -141,7 +141,7 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
-        self._BuildProfile()
+        # self._BuildProfile()
         self.query()
 
     def start(self):
@@ -166,6 +166,7 @@ class AuroraNode(polyinterface.Node):
         self.setDriver('GV4', intEffect)
     
     def setProfile(self, command):
+        self._saveEffetsList(self)
         self._BuildProfile()
     
     def query(self):
@@ -185,7 +186,7 @@ class AuroraNode(polyinterface.Node):
         
         #Write effectLists to Json
         try:
-            with open("effectLists.json", "w") as outfile:
+            with open("effectLists.json", "w+") as outfile:
                 json.dump(self.arrEffects, outfile)
         except IOError:
             LOGGER.error('Unable to write effectLists.json')
