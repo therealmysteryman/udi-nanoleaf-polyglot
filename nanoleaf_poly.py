@@ -196,7 +196,7 @@ class AuroraNode(polyinterface.Node):
             
     def _write_nls_profile(self):
         
-        # Build File from Template
+        # Build File NLS from Template
         with open("profile/nls/en_us.template") as f:
             with open("profile/nls/en_us.txt", "w+") as f1:
                 for line in f:
@@ -205,12 +205,31 @@ class AuroraNode(polyinterface.Node):
             f1.close()
         f.close()
                 
-        # Add Effect to Profile        
+        # Add Effect to NLS Profile        
         with open("profile/nls/en_us.txt", "a") as myfile:
             intCounter = 1
             for x in self.arrEffects:  
                 myfile.write("EFFECT_SEL-" + str(intCounter) + " = " + x + "\n")
                 intCounter = intCounter + 1
+        myfile.close()
+        
+        intArrSize = len(self.arrEffects)
+        if intArrSize is None or intArrSize == 0 :
+            intArrSize = 1
+        
+        with open("/profile/editor/editor.template") as f:
+            with open("profile/editor/editor.xml", "w+") as f1:
+                for line in f:
+                    f1.write(line) 
+                f1.write("\n") 
+            f1.close()
+        f.close()
+                  
+        with open("/profile/editor/editor.xml", "a") as myfile:
+            myfile.write("\t<editor id=\"MEFFECT\">"  + "\n")
+            myfile.write("\t\t<range uom=\"25\" subset=\"1-"+ str(intArrSize) + "\" nls=\"EFFECT_SEL\" />"  + "\n")
+            myfile.write("\t</editor>" + "\n")
+        myfile.close()
         
         self.parent._write_profile_zip()
         self.parent._install_profile()
