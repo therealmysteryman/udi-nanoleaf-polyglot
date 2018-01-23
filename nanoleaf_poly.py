@@ -162,7 +162,7 @@ class AuroraNode(polyinterface.Node):
         #Write effectLists to Json
         try:
             with open("effectLists.json", "w") as outfile:
-                json.dump(arrEffects, outfile)
+                json.dump(self.arrEffects, outfile)
         except IOError:
             LOGGER.error('Unable to write effectLists.json')
                 
