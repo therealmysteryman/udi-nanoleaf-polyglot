@@ -129,9 +129,9 @@ class AuroraNode(polyinterface.Node):
 
     def setEffect(self, command):
         query = command.get('query')
-        intEffect = command.get('value')
-        #self.my_aurora.effect = "Flames"
-        self.setDriver('GV4', intEffect)
+        strEffect = command.get('value')
+        self.my_aurora.effect = strEffect
+        self.setDriver('GV4', strEffect)
        
     def query(self):
         self.reportDrivers()
@@ -141,9 +141,9 @@ class AuroraNode(polyinterface.Node):
             self.setDriver('ST', 100)
         else:
             self.setDriver('ST', 0)
-        
-        # Bright Status
+            
         self.setDriver('GV3', self.my_aurora.brightness )
+        self.setDriver('GV4', self.my_aurora.effect)
     
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
