@@ -87,7 +87,7 @@ class Controller(polyinterface.Controller):
             return False
 
     def shortPoll(self):
-        pass
+        self.query()
 
     def longPoll(self):
         pass
