@@ -152,7 +152,7 @@ class AuroraNode(polyinterface.Node):
         else:
             self.setDriver('ST', 0)
         self.setDriver('GV3', self.my_aurora.brightness )
-        self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect+1))
+        self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1)
     
     def _saveEffetsList(self):
         self.arrEffects = self.my_aurora.effects_list
