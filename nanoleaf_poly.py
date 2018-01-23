@@ -166,7 +166,7 @@ class AuroraNode(polyinterface.Node):
         self.setDriver('GV4', intEffect)
     
     def setProfile(self, command):
-        self._saveEffetsList(self)
+        self._saveEffetsList()
         self._BuildProfile()
     
     def query(self):
