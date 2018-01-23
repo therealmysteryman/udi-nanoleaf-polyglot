@@ -229,6 +229,7 @@ class AuroraNode(polyinterface.Node):
             myfile.write("\t<editor id=\"MEFFECT\">"  + "\n")
             myfile.write("\t\t<range uom=\"25\" subset=\"1-"+ str(intArrSize) + "\" nls=\"EFFECT_SEL\" />"  + "\n")
             myfile.write("\t</editor>" + "\n")
+            myfile.write("</editors>")
         myfile.close()
         
         self.parent._write_profile_zip()
