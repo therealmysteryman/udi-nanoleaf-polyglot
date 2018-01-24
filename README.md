@@ -14,7 +14,17 @@ You can install it manually running
 
 If you want to reset the token or the ip of the nanoleaf, add a custom variable requestNewToken -> 1 To force rebuild of the cache.
 
+#### Usage
+
+This will create two nodes of for the Nanoleaf Controller and then one for the Aurora Light.
+
+Supported commande are :
+- Off
+- On 
+- Brightness
+- Effet
+
 #### Source
 
 1. Based on the Node Server Template - https://github.com/Einstein42/udi-poly-template-python
-2. Library for controlling the NanoLeaf Aurora - 
+2. Library for controlling the NanoLeaf Aurora -https://github.com/software-2/nanoleaf
