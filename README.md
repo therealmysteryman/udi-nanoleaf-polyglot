@@ -10,9 +10,9 @@ You can install it manually running
 1. cd ~/.polyglot/nodeservers
 2. git clone https://github.com/therealmysteryman/udi-nanoleaf-polyglot.git
 3. Create a custom variable named ip -> ipaddress_of_aurora
-4. Before starting for the first time Nanoleaf Node Server maker sure to have the Aurora in linking mode to generate the token. (holding the power button until the light flash) If you do have a token already then created a custom variable token -> token_string
+4. Before starting the Nanoleaf Node Server for the first time. Please make sure to have the Aurora in linking mode to generate the token. (holding the power button until the light flash) If you do have a token already then created a custom variable token -> token_string
 
-If you want to reset the token or the ip of the nanoleaf, add a custom variable requestNewToken -> 1 To force rebuild of the cache.
+If you want to reset the token or the ip of the nanoleaf, add a custom variable requestNewToken -> 1, to force rebuild of the cache.
 
 #### Usage
 
@@ -22,6 +22,7 @@ Support command are :
 - Off / On 
 - Brightness
 - Effet
+- Rebuild Effect List
 
 The first time you must press the Rebuild Effect List, to build your effect list from your NanoLeaf app. When you add or remove an effect in your Nanoleaf app you need to rebuild your effect list for the change to appear in ISY.
 
