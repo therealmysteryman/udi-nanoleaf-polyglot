@@ -124,6 +124,7 @@ class Controller(polyinterface.Controller):
     def _install_profile(self):
         try:
             self.poly.installprofile()
+            LOGGER.info('Please reboot ISY for change to take effect')
         except Exception as ex:
             LOGGER.error('Error installing profile: %s', str(ex))
         return True
@@ -259,6 +260,7 @@ class AuroraNode(polyinterface.Node):
     
     id = 'AURORA'
     commands = {
+                    'QUERY': query,            
                     'DON': setOn,
                     'DOF': setOff,
                     'SET_PROFILE' : setProfile,
