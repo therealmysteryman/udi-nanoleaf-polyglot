@@ -19,12 +19,11 @@ If you want to reset the token or the ip of the nanoleaf, add a custom variable 
 This will create two nodes of for the Nanoleaf Controller and then one for the Aurora Light.
 
 Support command are :
-- Off
-- On 
+- Off / On 
 - Brightness
 - Effet
 
-The first time you must press the Rebuild Effect List, to build your Effect list from your NanoLeaf App. When you add or remove an Effect in your Nanoleaf App you need to rebuild your effect list for the change to appear in ISY.
+The first time you must press the Rebuild Effect List, to build your effect list from your NanoLeaf app. When you add or remove an effect in your Nanoleaf app you need to rebuild your effect list for the change to appear in ISY.
 
 Note : Everytime you Rebuild your effect list you need to reboot ISY for the change to take effect.
 
