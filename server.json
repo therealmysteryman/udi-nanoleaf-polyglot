@@ -12,8 +12,8 @@
         {
             "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf",
             "author": "Jean-Francois Tremblay",
-            "version": "0.0.0",
-            "date": "Jan 21, 2018",
+            "version": "0.1.0",
+            "date": "Jan 23, 2018",
             "source": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
             "license": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE"
         },
