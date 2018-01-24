@@ -16,8 +16,14 @@ from nanoleaf import setup
 from nanoleaf import Aurora
 
 LOGGER = polyinterface.LOGGER
-SERVERDATA = json.load(open('server.json'))
-VERSION = SERVERDATA['credits'][0]['version']
+
+with open('server.json') as data:
+    SERVERDATA = json.load(data)
+try:
+    VERSION = SERVERDATA['credits'][0]['version']
+except (KeyError, ValueError):
+    LOGGER.info('Version not found in server.json.')
+    VERSION = '0.0.0'
 
 class Controller(polyinterface.Controller):
 
@@ -100,24 +106,26 @@ class Controller(polyinterface.Controller):
                 self.nodes[node].query()
 
     def _write_profile_zip(self):
-        src = 'profile'
-        abs_src = os.path.abspath(src)
-        with zipfile.ZipFile('profile.zip', 'w') as zf:
-            for dirname, subdirs, files in os.walk(src):
-                for filename in files:
-                    if filename.endswith('.xml') or filename.endswith('txt'):
-                        absname = os.path.abspath(os.path.join(dirname, filename))
-                        arcname = absname[len(abs_src) + 1:]
-                        LOGGER.info('write_profile_zip: %s as %s' % (os.path.join(dirname, filename),arcname))
-                        zf.write(absname, arcname)
-        zf.close()
-
+        try:
+            src = 'profile'
+            abs_src = os.path.abspath(src)
+            with zipfile.ZipFile('profile.zip', 'w') as zf:
+                for dirname, subdirs, files in os.walk(src):
+                    for filename in files:
+                        if filename.endswith('.xml') or filename.endswith('txt'):
+                            absname = os.path.abspath(os.path.join(dirname, filename))
+                            arcname = absname[len(abs_src) + 1:]
+                            LOGGER.info('write_profile_zip: %s as %s' % (os.path.join(dirname, filename),arcname))
+                            zf.write(absname, arcname)
+            zf.close()
+        except Exception as ex:
+            LOGGER.error('Error zipping profile: %s', str(ex))
+        
     def _install_profile(self):
         try:
             self.poly.installprofile()
-        except:
-            LOGGER.error("Install Profile Error")
-            return False
+        except Exception as ex:
+            LOGGER.error('Error installing profile: %s', str(ex))
         return True
         
     def discover(self, *args, **kwargs):
@@ -141,11 +149,10 @@ class AuroraNode(polyinterface.Node):
         
         self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
         self._getEffetsList()
-        # self._BuildProfile()
         self.query()
 
     def start(self):
-        self.query()                                          
+        pass                                     
         
     def setOn(self, command):
         self.my_aurora.on = True
@@ -174,12 +181,15 @@ class AuroraNode(polyinterface.Node):
         self.reportDrivers()
 
     def _updateValue(self):
-        if self.my_aurora.on is True:
-            self.setDriver('ST', 100)
-        else:
-            self.setDriver('ST', 0)
-        self.setDriver('GV3', self.my_aurora.brightness )
-        self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1)
+        try:
+            if self.my_aurora.on is True:
+                self.setDriver('ST', 100)
+            else:
+                self.setDriver('ST', 0)
+            self.setDriver('GV3', self.my_aurora.brightness )
+            self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1)
+        except Exception as ex:
+            LOGGER.error('Error updating Aurora value: %s', str(ex))
     
     def _saveEffetsList(self):
         self.arrEffects = self.my_aurora.effects_list
@@ -199,45 +209,49 @@ class AuroraNode(polyinterface.Node):
             self._saveEffetsList()
     
     def _BuildProfile(self):
+        try:
+            # Build File NLS from Template
+            with open("profile/nls/en_us.template") as f:
+                with open("profile/nls/en_us.txt", "w+") as f1:
+                    for line in f:
+                        f1.write(line) 
+                    f1.write("\n") 
+                f1.close()
+            f.close()
+
+            # Add Effect to NLS Profile        
+            with open("profile/nls/en_us.txt", "a") as myfile:
+                intCounter = 1
+                for x in self.arrEffects:  
+                    myfile.write("EFFECT_SEL-" + str(intCounter) + " = " + x + "\n")
+                    intCounter = intCounter + 1
+            myfile.close()
+
+            intArrSize = len(self.arrEffects)
+            if intArrSize is None or intArrSize == 0 :
+                intArrSize = 1
+
+            with open("profile/editor/editors.template") as f:
+                with open("profile/editor/editors.xml", "w+") as f1:
+                    for line in f:
+                        f1.write(line) 
+                    f1.write("\n") 
+                f1.close()
+            f.close()
+
+            with open("profile/editor/editors.xml", "a") as myfile:
+                myfile.write("\t<editor id=\"MEFFECT\">"  + "\n")
+                myfile.write("\t\t<range uom=\"25\" subset=\"1-"+ str(intArrSize) + "\" nls=\"EFFECT_SEL\" />"  + "\n")
+                myfile.write("\t</editor>" + "\n")
+                myfile.write("</editors>")
+            myfile.close()
         
-        # Build File NLS from Template
-        with open("profile/nls/en_us.template") as f:
-            with open("profile/nls/en_us.txt", "w+") as f1:
-                for line in f:
-                    f1.write(line) 
-                f1.write("\n") 
-            f1.close()
-        f.close()
-                
-        # Add Effect to NLS Profile        
-        with open("profile/nls/en_us.txt", "a") as myfile:
-            intCounter = 1
-            for x in self.arrEffects:  
-                myfile.write("EFFECT_SEL-" + str(intCounter) + " = " + x + "\n")
-                intCounter = intCounter + 1
-        myfile.close()
-        
-        intArrSize = len(self.arrEffects)
-        if intArrSize is None or intArrSize == 0 :
-            intArrSize = 1
-        
-        with open("profile/editor/editors.template") as f:
-            with open("profile/editor/editors.xml", "w+") as f1:
-                for line in f:
-                    f1.write(line) 
-                f1.write("\n") 
-            f1.close()
-        f.close()
-                  
-        with open("profile/editor/editors.xml", "a") as myfile:
-            myfile.write("\t<editor id=\"MEFFECT\">"  + "\n")
-            myfile.write("\t\t<range uom=\"25\" subset=\"1-"+ str(intArrSize) + "\" nls=\"EFFECT_SEL\" />"  + "\n")
-            myfile.write("\t</editor>" + "\n")
-            myfile.write("</editors>")
-        myfile.close()
+        except Exception as ex:
+            LOGGER.error('Error generating profile: %s', str(ex))
         
         self.parent._write_profile_zip()
         self.parent._install_profile()
+
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
                {'driver': 'GV3', 'value': 0, 'uom': 51},
