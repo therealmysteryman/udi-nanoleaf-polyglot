@@ -67,7 +67,6 @@ class Controller(polyinterface.Controller):
             if self.nano_token is None or self.requestNewToken == 1:
                 LOGGER.debug('Requesting Token')
                 self.nano_token = setup.generate_auth_token(self.nano_ip)
-                LOGGER.debug(self.nano_token)
                 if self.nano_token is None:
                     LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
                     self.setDriver('ST', 0)
