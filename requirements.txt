@@ -1,2 +1,2 @@
-polyinterface>=2.0.0
-nanoleaf
+polyinterface>=2.0.19
+nanoleaf>=0.4.1
