@@ -6,11 +6,11 @@
     "install": "install.sh",
     "shortPoll": "15",
     "longPoll": "60",
-    "description": "Connect Nanoleaf to the ISY994.",
+    "description": "Connect Nanoleaf Aurora to the ISY994.",
     "notice": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE",
     "credits": [
         {
-            "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf",
+            "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf Aurora",
             "author": "Jean-Francois Tremblay",
             "version": "0.1.1",
             "date": "Jan 23, 2018",
