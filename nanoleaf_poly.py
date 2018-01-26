@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This is a NodeServer for Nanoleaf written by automationgeek (Jean-Francois Tremblay) 
+This is a NodeServer for Nanoleaf Aurora written by automationgeek (Jean-Francois Tremblay) 
 based on the NodeServer template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com.
 Using this Python Library to control NanoLeaf by Software2 https://github.com/software-2/nanoleaf
 """
@@ -37,7 +37,7 @@ class Controller(polyinterface.Controller):
         self.requestNewToken = 0
         
     def start(self):
-        LOGGER.info('Started NanoLeaf for v2 NodeServer version %s', str(VERSION))
+        LOGGER.info('Started NanoLeaf Aurora for v2 NodeServer version %s', str(VERSION))
         try:
             custom_data_ip = False
             custom_data_token = False
@@ -100,7 +100,7 @@ class Controller(polyinterface.Controller):
         self.query()
 
     def query(self):
-        # self.reportDrivers()
+        self.reportDrivers()
         for node in self.nodes:
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
@@ -148,7 +148,11 @@ class AuroraNode(polyinterface.Node):
         self.timeout = 5.0
         self.arrEffects = None
         
-        self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
+        try:
+            self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
+        except Exception as ex:
+            LOGGER.error('Error unable to connect to NanoLeaf Aurora: %s', str(ex))
+            
         self._getEffetsList()
         self.query()
 
@@ -179,7 +183,7 @@ class AuroraNode(polyinterface.Node):
     
     def query(self):
         self._updateValue()
-        # self.reportDrivers()
+        self.reportDrivers()
 
     def _updateValue(self):
         try:
@@ -193,8 +197,11 @@ class AuroraNode(polyinterface.Node):
             LOGGER.error('Error updating Aurora value: %s', str(ex))
     
     def _saveEffetsList(self):
-        self.arrEffects = self.my_aurora.effects_list
-        
+        try:
+            self.arrEffects = self.my_aurora.effects_list
+        except Exception as ex:
+            LOGGER.error('Unable to get NanoLeaf Effet List: %s', str(ex))
+            
         #Write effectLists to Json
         try:
             with open(".effectLists.json", "w+") as outfile:
