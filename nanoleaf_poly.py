@@ -61,7 +61,7 @@ class Controller(polyinterface.Controller):
                     custom_data_token = True
                     LOGGER.info('Nano token found in the Database.')
                 else:
-                    LOGGER.cinfo('Custom Data is not found in the DB')
+                    LOGGER.info('Custom Data is not found in the DB')
 
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
             if self.nano_token is None or self.requestNewToken == 1:
