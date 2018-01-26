@@ -72,7 +72,7 @@ class Controller(polyinterface.Controller):
                     self.setDriver('ST', 0)
                     return False      
             
-            if custom_data_ip == False or custom_data_token == False:
+            if  custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
                 data = { 'nano_token': self.nano_token }
                 self.saveCustomData(data)
