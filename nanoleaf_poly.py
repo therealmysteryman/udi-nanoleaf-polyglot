@@ -97,7 +97,7 @@ class Controller(polyinterface.Controller):
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
 
-    def _write_profile_zip(self):
+    def write_profile_zip(self):
         try:
             src = 'profile'
             abs_src = os.path.abspath(src)
@@ -113,7 +113,7 @@ class Controller(polyinterface.Controller):
         except Exception as ex:
             LOGGER.error('Error zipping profile: %s', str(ex))
         
-    def _install_profile(self):
+    def install_profile(self):
         try:
             self.poly.installprofile()
             LOGGER.info('Please reboot ISY for change to take effect')
@@ -145,11 +145,11 @@ class AuroraNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error unable to connect to NanoLeaf Aurora: %s', str(ex))
             
-        self._getEffetsList()
+        self.__getEffetsList()
         self.query()
 
     def start(self):
-        pass                                     
+        self.__BuildProfile                                     
         
     def setOn(self, command):
         self.my_aurora.on = True
@@ -177,7 +177,7 @@ class AuroraNode(polyinterface.Node):
         self._updateValue()
         self.reportDrivers()
 
-    def _updateValue(self):
+    def __updateValue(self):
         try:
             if self.my_aurora.on is True:
                 self.setDriver('ST', 100)
@@ -188,7 +188,7 @@ class AuroraNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error updating Aurora value: %s', str(ex))
     
-    def _saveEffetsList(self):
+    def __saveEffetsList(self):
         try:
             self.arrEffects = self.my_aurora.effects_list
         except Exception as ex:
@@ -201,14 +201,14 @@ class AuroraNode(polyinterface.Node):
         except IOError:
             LOGGER.error('Unable to write effectLists.json')
               
-    def _getEffetsList(self):
+    def __getEffetsList(self):
         try:
             with open(".effectLists.json", "r") as infile:
                 self.arrEffects = json.load(infile)
         except IOError:
-            self._saveEffetsList()
+            self.__saveEffetsList()
     
-    def _BuildProfile(self):
+    def __BuildProfile(self):
         try:
             # Build File NLS from Template
             with open("profile/nls/en_us.template") as f:
@@ -249,8 +249,8 @@ class AuroraNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error generating profile: %s', str(ex))
         
-        self.parent._write_profile_zip()
-        self.parent._install_profile()
+        self.parent.write_profile_zip()
+        self.parent.install_profile()
 
         
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 78},
