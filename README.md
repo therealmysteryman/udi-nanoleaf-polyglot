@@ -1,5 +1,7 @@
 # Nanoleaf Polyglot V2 Node Server
 
+![Build Status](https://travis-ci.org/therealmysteryman/udi-nanoleaf-polyglot.svg?branch=master)
+
 This Poly provides an interface between NanoLeaf Aurora and Polyglot v2 server. Support control of one Aurora Light per Node Server
 
 #### Installation
