@@ -11,7 +11,7 @@
     "credits": [
         {
             "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf Aurora",
-            "author": "Jean-Francois Tremblay (AutomationGeek)",
+            "author": "AutomationGeek",
             "version": "0.1.3",
             "date": "Feb 02, 2018",
             "source": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
