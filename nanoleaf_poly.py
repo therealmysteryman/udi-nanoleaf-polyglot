@@ -146,10 +146,11 @@ class AuroraNode(polyinterface.Node):
             LOGGER.error('Error unable to connect to NanoLeaf Aurora: %s', str(ex))
             
         self.__getEffetsList()
+        self.__BuildProfile()
         self.query()
 
     def start(self):
-        self.__BuildProfile                                     
+        pass
         
     def setOn(self, command):
         self.my_aurora.on = True
