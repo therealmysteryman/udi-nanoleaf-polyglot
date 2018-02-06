@@ -14,6 +14,7 @@ You can install from Polyglot V2 store or manually :
 3. run ./install.sh to install the required dependency.
 4. Create a custom variable named ip -> ipaddress_of_aurora
 5. Before starting the Nanoleaf Node Server for the first time. Please make sure to have the Aurora in linking mode to generate the token. (holding the power button until the light flash) If you do have a token already then created a custom variable token -> token_string
+6. After the first run, I suggest you click on the Rebuild Profile of the Aurora and restart the Admin Console. This will provide you with and updated list of Effect for your Aurora.
 
 If you want to reset the token or the ip of the nanoleaf, add a custom variable requestNewToken -> 1, to force rebuild of the cache.
 
@@ -29,7 +30,7 @@ Support command are :
 
 The first time you must press the Rebuild Effect List, to build your effect list from your NanoLeaf app. When you add or remove an effect in your Nanoleaf app you need to rebuild your effect list for the change to appear in ISY.
 
-Note : Everytime you Rebuild your effect list you need to reboot ISY for the change to take effect.
+Note : Everytime you Rebuild your effect list you need to restart ISY Admin Console for the change to take effect.
 
 #### Source
 
