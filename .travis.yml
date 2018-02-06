@@ -3,6 +3,6 @@ language:
 python:
 - '3.6'
 before_install:
-  - chmod +x ValidatePythonSyntax.sh
+  - chmod +x validatePythonSyntax.sh
 script:
-- "./ValidatePythonSyntax.sh"
+- "./validatePythonSyntax.sh"
