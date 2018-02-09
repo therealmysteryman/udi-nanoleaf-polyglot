@@ -79,7 +79,6 @@ class Controller(polyinterface.Controller):
             
             self.setDriver('ST', 1, True)
             self.discover()
-            self.reportDrivers()
                                                             
         except Exception as ex:
             LOGGER.error('Error starting NanoLeaf NodeServer: %s', str(ex))
