@@ -49,7 +49,7 @@ class Controller(polyinterface.Controller):
                 LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
             else:
                 LOGGER.error('Need to have ip address in custom param ip')
-                self.setDriver('ST', 0)
+                self.setDriver('ST', 0, True)
                 return False
             
             if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
@@ -66,12 +66,17 @@ class Controller(polyinterface.Controller):
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
             if self.nano_token is None or self.requestNewToken == 1:
                 LOGGER.debug('Requesting Token')
-                self.nano_token = setup.generate_auth_token(self.nano_ip)
-                if self.nano_token is None:
-                    LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
-                    self.setDriver('ST', 0, True)
-                    return False      
-            
+                for myHost in self.nano_ip.split(','):
+                    mytoken = setup.generate_auth_token(myHost)
+                    if mytoken is None:
+                        LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
+                        self.setDriver('ST', 0, True)
+                        return False
+                    else if self.nano_token is None:
+                        self.nano_token = mytoken
+                    else:
+                        self.nano_token = self.nano_token + ',' + mytoken
+                        
             if  custom_data_token == False:
                 LOGGER.debug('Saving access credentials to the Database')
                 data = { 'nano_token': self.nano_token }
@@ -123,8 +128,12 @@ class Controller(polyinterface.Controller):
         
     def discover(self, *args, **kwargs):
         time.sleep(1)
-        self.addNode(AuroraNode(self, self.address, 'myaurora', 'MyAurora'))
-
+        count = 0
+        arrToken = self.nano_token.split(',')
+        for myHost in self.nano_ip.split(','):
+            self.addNode(AuroraNode(self, self.address, 'aurora' + str(count+1) , 'Aurora' + str(count+1), myHost, arrToken[count]))
+            count = count + 1
+            
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
         
@@ -134,14 +143,16 @@ class Controller(polyinterface.Controller):
     
 class AuroraNode(polyinterface.Node):
 
-    def __init__(self, controller, primary, address, name):
+    def __init__(self, controller, primary, address, name, ip, token):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         self.do_poll = True
         self.timeout = 5.0
+        self.nano_ip = ip
+        self.nano_token = token
         self.arrEffects = None
         
         try:
-            self.my_aurora = Aurora(self.parent.nano_ip,self.parent.nano_token)
+            self.my_aurora = Aurora(self.nano_ip,self.nano_token)
         except Exception as ex:
             LOGGER.error('Error unable to connect to NanoLeaf Aurora: %s', str(ex))
             
