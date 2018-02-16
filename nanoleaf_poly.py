@@ -72,7 +72,7 @@ class Controller(polyinterface.Controller):
                         LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
                         self.setDriver('ST', 0, True)
                         return False
-                    else if self.nano_token is None:
+                    elseif self.nano_token is None:
                         self.nano_token = mytoken
                     else:
                         self.nano_token = self.nano_token + ',' + mytoken
