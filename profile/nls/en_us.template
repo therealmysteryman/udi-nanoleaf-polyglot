@@ -15,6 +15,7 @@ ST-GV5-NAME = Status
 CMD-DON-NAME = On
 CMD-DOF-NAME = Off
 CMD-QUERY-NAME = Query
+CMD-DISCOVERY-NAME = Discover
 CMD-SET_PROFILE-NAME = Rebuild Effect List
 CMD-SET_BRI-NAME = Set Brightness
 CMD-SET_EFFECT-NAME = Set Effect

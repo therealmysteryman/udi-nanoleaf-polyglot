@@ -14,6 +14,7 @@ import os
 import zipfile
 from nanoleaf import setup
 from nanoleaf import Aurora
+from threading import Thread
 
 LOGGER = polyinterface.LOGGER
 
@@ -35,6 +36,7 @@ class Controller(polyinterface.Controller):
         self.nano_ip = None
         self.nano_token = None
         self.requestNewToken = 0
+        self.discovery_thread = None
         
     def start(self):
         LOGGER.info('Started NanoLeaf Aurora for v2 NodeServer version %s', str(VERSION))
@@ -94,29 +96,19 @@ class Controller(polyinterface.Controller):
         pass
 
     def longPoll(self):
-        self.query()
+        if self.discovery_thread is not None:
+            if self.discovery_thread.isAlive():
+                LOGGER.debug('Skipping longPoll() while discovery in progress...')
+                return
+            else:
+                self.discovery_thread = None
+                self.query()
 
     def query(self):
         self.setDriver('ST', 1, True)
         for node in self.nodes:
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
-
-    def write_profile_zip(self):
-        try:
-            src = 'profile'
-            abs_src = os.path.abspath(src)
-            with zipfile.ZipFile('profile.zip', 'w') as zf:
-                for dirname, subdirs, files in os.walk(src):
-                    for filename in files:
-                        if filename.endswith('.xml') or filename.endswith('txt'):
-                            absname = os.path.abspath(os.path.join(dirname, filename))
-                            arcname = absname[len(abs_src) + 1:]
-                            LOGGER.info('write_profile_zip: %s as %s' % (os.path.join(dirname, filename),arcname))
-                            zf.write(absname, arcname)
-            zf.close()
-        except Exception as ex:
-            LOGGER.error('Error zipping profile: %s', str(ex))
         
     def install_profile(self):
         try:
@@ -125,8 +117,19 @@ class Controller(polyinterface.Controller):
         except Exception as ex:
             LOGGER.error('Error installing profile: %s', str(ex))
         return True
-        
-    def discover(self, *args, **kwargs):
+   
+    def runDiscover(self,command):
+        self.discover()
+    
+    def discover(self, *args, **kwargs):  
+        if self.discovery_thread is not None:
+            if self.discovery_thread.isAlive():
+                LOGGER.info('Discovery is still in progress')
+                return
+        self.discovery_thread = Thread(target=self._discovery_process)
+        self.discovery_thread.start()
+
+    def _discovery_process(self):
         time.sleep(1)
         count = 0
         arrToken = self.nano_token.split(',')
@@ -138,7 +141,7 @@ class Controller(polyinterface.Controller):
         LOGGER.info('Deleting NanoLeaf')
         
     id = 'controller'
-    commands = {}
+    commands = {'DISCOVERY' : runDiscover}
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}]
     
 class AuroraNode(polyinterface.Node):
@@ -260,7 +263,6 @@ class AuroraNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error generating profile: %s', str(ex))
         
-        self.parent.write_profile_zip()
         self.parent.install_profile()
 
         
