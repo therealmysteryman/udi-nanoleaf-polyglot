@@ -101,22 +101,6 @@ class Controller(polyinterface.Controller):
         for node in self.nodes:
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
-
-    def write_profile_zip(self):
-        try:
-            src = 'profile'
-            abs_src = os.path.abspath(src)
-            with zipfile.ZipFile('profile.zip', 'w') as zf:
-                for dirname, subdirs, files in os.walk(src):
-                    for filename in files:
-                        if filename.endswith('.xml') or filename.endswith('txt'):
-                            absname = os.path.abspath(os.path.join(dirname, filename))
-                            arcname = absname[len(abs_src) + 1:]
-                            LOGGER.info('write_profile_zip: %s as %s' % (os.path.join(dirname, filename),arcname))
-                            zf.write(absname, arcname)
-            zf.close()
-        except Exception as ex:
-            LOGGER.error('Error zipping profile: %s', str(ex))
         
     def install_profile(self):
         try:
@@ -260,7 +244,6 @@ class AuroraNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error generating profile: %s', str(ex))
         
-        self.parent.write_profile_zip()
         self.parent.install_profile()
 
         
