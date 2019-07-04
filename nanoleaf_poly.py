@@ -109,7 +109,7 @@ class Controller(polyinterface.Controller):
         for node in self.nodes:
             if self.nodes[node].address != self.address and self.nodes[node].do_poll:
                 self.nodes[node].query()
-        
+        self.reportDrivers()
     def install_profile(self):
         try:
             self.poly.installprofile()
@@ -199,6 +199,7 @@ class AuroraNode(polyinterface.Node):
                 self.setDriver('ST', 0, True)
             self.setDriver('GV3', self.my_aurora.brightness, True)
             self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1, True)
+            self.reportDrivers()
         except Exception as ex:
             LOGGER.error('Error updating Aurora value: %s', str(ex))
     
