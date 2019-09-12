@@ -1,2 +1,2 @@
 polyinterface>=2.0.19
-nanoleaf>=0.4.1
+git+https://github.com/therealmysteryman/nanoleaf.git#egg=nanoleaf
