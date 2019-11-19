@@ -35,4 +35,4 @@ Note : Everytime you Rebuild your effect list you need to restart ISY Admin Cons
 #### Source
 
 1. Based on the Node Server Template - https://github.com/Einstein42/udi-poly-template-python
-2. Library for controlling the NanoLeaf Aurora - https://github.com/software-2/nanoleaf
+2. Library for controlling the NanoLeaf Aurora - https://github.com/Oro/pynanoleaf
