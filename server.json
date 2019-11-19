@@ -12,7 +12,7 @@
         {
             "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf Aurora",
             "author": "AutomationGeek",
-            "version": "2.2.4",
+            "version": "2.3.0",
             "date": "November 9, 2019",
             "source": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
             "license": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE"
@@ -26,12 +26,12 @@
             "license": "https://raw.githubusercontent.com/Einstein42/udi-poly-template-python/master/LICENSE"
         },
 	{
-            "title": "A python interface for Nanoleaf Aurora lighting",
-            "author": "Software2",
-            "version": "1.0.0",
-            "date": "August 20, 2017",
-            "source": "https://github.com/software-2/nanoleaf",
-            "license": "https://github.com/software-2/nanoleaf/blob/master/LICENSE"
+            "title": "A Python3 wrapper for the Nanoleaf API, capable of controlling both Nanoleaf Aurora and Nanoleaf Canvas.",
+            "author": "Oro",
+            "version": "0.0.5",
+            "date": "March 11, 2019",
+            "source": "https://github.com/Oro/pynanoleaf/",
+            "license": "https://github.com/Oro/pynanoleaf/blob/master/LICENSE"
         }
     ]
 }
