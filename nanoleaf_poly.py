@@ -3,7 +3,7 @@
 """
 This is a NodeServer for Nanoleaf Aurora written by automationgeek (Jean-Francois Tremblay) 
 based on the NodeServer template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com.
-Using this Python Library to control NanoLeaf by Software2 https://github.com/software-2/nanoleaf
+Using this Python Library to control NanoLeaf by https://github.com/Oro/pynanoleaf
 """
 
 import polyinterface
@@ -12,9 +12,8 @@ import json
 import sys
 import os
 import zipfile
-from nanoleaf import setup
-from nanoleaf import Aurora
 from threading import Thread
+from pynanoleaf import Nanoleaf, Unavailable
 
 LOGGER = polyinterface.LOGGER
 
@@ -69,7 +68,8 @@ class Controller(polyinterface.Controller):
             if self.nano_token is None or self.requestNewToken == 1:
                 LOGGER.debug('Requesting Token')
                 for myHost in self.nano_ip.split(','):
-                    mytoken = setup.generate_auth_token(myHost)
+                    nanoleaf = Nanoleaf(host=myHost)
+                    mytoken = nanoleaf.request_token()
                     if mytoken is None:
                         LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
                         self.setDriver('ST', 0, True)
@@ -155,7 +155,7 @@ class AuroraNode(polyinterface.Node):
         self.arrEffects = None
         
         try:
-            self.my_aurora = Aurora(self.nano_ip,self.nano_token)
+            self.my_aurora = Nanoleaf(host=self.nano_ip,token=self.nano_token)
         except Exception as ex:
             LOGGER.error('Error unable to connect to NanoLeaf Aurora: %s', str(ex))
             
@@ -171,7 +171,7 @@ class AuroraNode(polyinterface.Node):
         self.setDriver('ST', 100, True)
 
     def setOff(self, command):
-        self.my_aurora.on = False
+        self.my_aurora.off = True
         self.setDriver('ST', 0, True)
         
     def setBrightness(self, command):
@@ -205,7 +205,7 @@ class AuroraNode(polyinterface.Node):
     
     def __saveEffetsList(self):
         try:
-            self.arrEffects = self.my_aurora.effects_list
+            self.arrEffects = self.my_aurora.effects
         except Exception as ex:
             LOGGER.error('Unable to get NanoLeaf Effet List: %s', str(ex))
             
