@@ -64,7 +64,7 @@ class Controller(polyinterface.Controller):
                 LOGGER.info('Saving token to the Database')
                
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None
+            if self.nano_token is None :
                 LOGGER.debug('Requesting Token')
                 for myHost in self.nano_ip.split(','):
                     nanoleaf = Nanoleaf(host=myHost)
