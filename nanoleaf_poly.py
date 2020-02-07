@@ -39,9 +39,8 @@ class Controller(polyinterface.Controller):
     def start(self):
         LOGGER.info('Started NanoLeaf Aurora for v2 NodeServer version %s', str(VERSION))
         try:
-            custom_data_token = False
             
-            # Get and Set IP
+            # Get and set IP
             if 'ip' in self.polyConfig['customParams'] :
                 self.nano_ip = self.polyConfig['customParams']['ip']
                 LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
@@ -50,19 +49,26 @@ class Controller(polyinterface.Controller):
                 self.setDriver('ST', 0, True)
                 return False
             
-            # Reinitialize token
-            if 'requestNewToken' in self.polyConfig['customParams']:
-                self.nano_token = None
-                self.saveCustomData({ 'nano_token': '' })
-                LOGGER.debug('Resetting token')
-
-            # Token were specified, no need to obtain them 
+            # Get saved token
+            if 'nano_token' in self.polyConfig['customParams'] :
+                self.nano_token = self.polyConfig['customParams']['nano_token']
+                if self.nano_token  == ' ' :
+                    self.nano_token = None
+                LOGGER.debug('Retrieved token : {}'.format(self.nano_token))
+            
+            # If token is provided overwrite the saved token
             if 'token' in self.polyConfig['customParams'] :
                 self.nano_token = self.polyConfig['customParams']['token']
                 self.saveCustomData({ 'nano_token': self.nano_token })
                 LOGGER.debug('Custom token specified: {}'.format(self.nano_token))
                 LOGGER.info('Saving token to the Database')
-               
+            
+            # Reinitialize token only if token was not provided
+            if 'requestNewToken' in self.polyConfig['customParams'] and 'token' not in self.polyConfig['customParams'] :
+                self.nano_token = None
+                self.saveCustomData({ 'nano_token': ' ' })
+                LOGGER.debug('Resetting token')
+                
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
             if self.nano_token is None :
                 LOGGER.debug('Requesting Token')
@@ -71,7 +77,7 @@ class Controller(polyinterface.Controller):
                     myToken = nanoleaf.request_token()
                     if myToken is None:
                         myToken = ' '
-                        LOGGER.error('Unable to obtain one of the token, make sure the NanoLeaf is in Linking mode.')
+                        LOGGER.error('Unable to obtain one of the token, make sure all NanoLeaf are in Linking mode.')
                         
                     if self.nano_token is None:
                         self.nano_token = myToken
@@ -79,7 +85,7 @@ class Controller(polyinterface.Controller):
                         self.nano_token = self.nano_token + ',' + myToken
             
                 self.saveCustomData({ 'nano_token': self.nano_token })
-                LOGGER.debug('Token specified: {}'.format(self.nano_token))
+                LOGGER.debug('Token received: {}'.format(self.nano_token))
                 LOGGER.info('Saving token to the Database')
                         
                         
