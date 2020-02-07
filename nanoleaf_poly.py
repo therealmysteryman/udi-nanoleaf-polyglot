@@ -34,7 +34,6 @@ class Controller(polyinterface.Controller):
         self.tries = 0
         self.nano_ip = None
         self.nano_token = None
-        self.requestNewToken = 0
         self.discovery_thread = None
         
     def start(self):
@@ -42,10 +41,8 @@ class Controller(polyinterface.Controller):
         try:
             custom_data_token = False
             
-            if 'requestNewToken' in self.polyConfig['customParams']:
-                self.requestNewToken = self.polyConfig['customParams']['requestNewToken']    
-            
-            if 'ip' in self.polyConfig['customParams'] and self.nano_ip is None:
+            # Get and Set IP
+            if 'ip' in self.polyConfig['customParams'] :
                 self.nano_ip = self.polyConfig['customParams']['ip']
                 LOGGER.info('Custom IP address specified: {}'.format(self.nano_ip))
             else:
@@ -53,37 +50,39 @@ class Controller(polyinterface.Controller):
                 self.setDriver('ST', 0, True)
                 return False
             
-            if 'token' in self.polyConfig['customParams'] and self.nano_token is None:
-                self.nano_token = self.polyConfig['customParams']['token']
-                LOGGER.info('Custom Token specified: {}'.format(self.nano_token))
-            else:
-                if 'nano_token' in self.polyConfig['customData']:
-                    self.nano_token = self.polyConfig['customData']['nano_token']
-                    custom_data_token = True
-                    LOGGER.info('Nano token found in the Database.')
-                else:
-                    LOGGER.info('Custom Data is not found in the DB')
+            # Reinitialize token
+            if 'requestNewToken' in self.polyConfig['customParams']:
+                self.nano_token = None
+                self.saveCustomData({ 'nano_token': '' })
+                LOGGER.debug('Resetting token')
 
+            # Token were specified, no need to obtain them 
+            if 'token' in self.polyConfig['customParams'] :
+                self.nano_token = self.polyConfig['customParams']['token']
+                self.saveCustomData({ 'nano_token': self.nano_token })
+                LOGGER.debug('Custom token specified: {}'.format(self.nano_token))
+                LOGGER.info('Saving token to the Database')
+               
             # Obtain NanoLeaf token, make sure to push on the power button of Aurora until Light is Flashing
-            if self.nano_token is None or self.requestNewToken == 1:
+            if self.nano_token is None
                 LOGGER.debug('Requesting Token')
                 for myHost in self.nano_ip.split(','):
                     nanoleaf = Nanoleaf(host=myHost)
-                    mytoken = nanoleaf.request_token()
-                    if mytoken is None:
-                        LOGGER.error('Unable to obtain the token, make sure the NanoLeaf is in Linking mode')
-                        self.setDriver('ST', 0, True)
-                        return False
-                    elif self.nano_token is None:
-                        self.nano_token = mytoken
-                    else:
-                        self.nano_token = self.nano_token + ',' + mytoken
+                    myToken = nanoleaf.request_token()
+                    if myToken is None:
+                        myToken = ' '
+                        LOGGER.error('Unable to obtain one of the token, make sure the NanoLeaf is in Linking mode.')
                         
-            if  custom_data_token == False:
-                LOGGER.debug('Saving access credentials to the Database')
-                data = { 'nano_token': self.nano_token }
-                self.saveCustomData(data)
+                    if self.nano_token is None:
+                        self.nano_token = myToken
+                    else:
+                        self.nano_token = self.nano_token + ',' + myToken
             
+                self.saveCustomData({ 'nano_token': self.nano_token })
+                LOGGER.debug('Token specified: {}'.format(self.nano_token))
+                LOGGER.info('Saving token to the Database')
+                        
+                        
             self.setDriver('ST', 1, True)
             self.discover()
                                                             
@@ -130,13 +129,19 @@ class Controller(polyinterface.Controller):
         self.discovery_thread.start()
 
     def _discovery_process(self):
-        time.sleep(1)
-        count = 0
-        arrToken = self.nano_token.split(',')
-        for myHost in self.nano_ip.split(','):
-            self.addNode(AuroraNode(self, self.address, 'aurora' + str(count+1) , 'Aurora' + str(count+1), myHost, arrToken[count]))
-            count = count + 1
-            
+        lstIp = self.nano_ip.split(',')
+        lstToken = self.nano_token.split(',')
+        lstAccess = None
+        
+        if ( len(lstIp) == len(lstToken) ):
+            id = 1 
+            lstAccess = list(zip(lstIp, lstToken))
+            for access in lstAccess:
+                self.addNode(AuroraNode(self, self.address, 'aurora' + str(id) , 'Aurora' + str(id), access[0], access[1]))
+                id = id + 1 
+        else:
+            LOGGER.error('Unable to initialize the AuroraNode, list of host and token does not match.')
+        
     def delete(self):
         LOGGER.info('Deleting NanoLeaf')
         
