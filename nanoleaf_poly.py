@@ -12,18 +12,24 @@ import json
 import sys
 import os
 import zipfile
+from copy import deepcopy
 from threading import Thread
 from pynanoleaf import Nanoleaf, Unavailable
 
 LOGGER = polyinterface.LOGGER
+SERVERDATA = json.load(open('server.json'))
+VERSION = SERVERDATA['credits'][0]['version']
 
-with open('server.json') as data:
-    SERVERDATA = json.load(data)
-try:
-    VERSION = SERVERDATA['credits'][0]['version']
-except (KeyError, ValueError):
-    LOGGER.info('Version not found in server.json.')
-    VERSION = '0.0.0'
+def get_profile_info(logger):
+    pvf = 'profile/version.txt'
+    try:
+        with open(pvf) as f:
+            pv = f.read().replace('\n', '')
+    except Exception as err:
+        logger.error('get_profile_info: failed to read  file {0}: {1}'.format(pvf,err), exc_info=True)
+        pv = 0
+    f.close()
+    return { 'version': pv }
 
 class Controller(polyinterface.Controller):
 
@@ -101,20 +107,13 @@ class Controller(polyinterface.Controller):
         pass
 
     def longPoll(self):
-        if self.discovery_thread is not None:
-            if self.discovery_thread.is_alive():
-                LOGGER.debug('Skipping longPoll() while discovery in progress...')
-                return
-            else:
-                self.discovery_thread = None
-                self.query()
-
-    def query(self):
+        self.heartbeat()
         self.setDriver('ST', 1, True)
-        for node in self.nodes:
-            if self.nodes[node].address != self.address and self.nodes[node].do_poll:
-                self.nodes[node].query()
         self.reportDrivers()
+        for node in self.nodes:
+            if self.nodes[node].queryON == True :
+                self.nodes[node].query()
+        
     def install_profile(self):
         try:
             self.poly.installprofile()
@@ -159,7 +158,7 @@ class AuroraNode(polyinterface.Node):
 
     def __init__(self, controller, primary, address, name, ip, token):
         super(AuroraNode, self).__init__(controller, primary, address, name)
-        self.do_poll = True
+        self.queryON = True
         self.timeout = 5.0
         self.nano_ip = ip
         self.nano_token = token
