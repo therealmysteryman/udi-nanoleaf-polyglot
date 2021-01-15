@@ -104,10 +104,17 @@ class Controller(polyinterface.Controller):
             return False
 
     def shortPoll(self):
+        if self.discovery_thread is not None:
+            if self.discovery_thread.is_alive():
+                LOGGER.debug('Skipping shortPoll() while discovery in progress...')
+                return
+            else:
+                self.discovery_thread = None
+        
         self.setDriver('ST', 1)
         self.reportDrivers()
         for node in self.nodes:
-            if  node != self.address and self.nodes[node].queryON == True :
+            if  node.address != self.address and self.nodes[node].queryON == True :
                 self.nodes[node].query()
 
     def longPoll(self):
