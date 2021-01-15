@@ -104,16 +104,15 @@ class Controller(polyinterface.Controller):
             return False
 
     def shortPoll(self):
-        pass
+        self.setDriver('ST', 1)
+        self.reportDrivers()
+        for node in self.nodes:
+            if  node != self.address and self.nodes[node].queryON == True :
+                self.nodes[node].query()
 
     def longPoll(self):
         self.heartbeat()
-        self.setDriver('ST', 1, True)
-        self.reportDrivers()
-        for node in self.nodes:
-            if self.nodes[node].queryON == True :
-                self.nodes[node].query()
-        
+
     def install_profile(self):
         try:
             self.poly.installprofile()
