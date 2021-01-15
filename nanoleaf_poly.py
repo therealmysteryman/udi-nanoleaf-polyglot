@@ -38,7 +38,7 @@ class Controller(polyinterface.Controller):
         self.name = 'NanoLeaf'
         self.initialized = False
         self.tries = 0
-        self.queryON == False
+        self.queryON = False
         self.nano_ip = None
         self.nano_token = None
         self.discovery_thread = None
