@@ -38,6 +38,7 @@ class Controller(polyinterface.Controller):
         self.name = 'NanoLeaf'
         self.initialized = False
         self.tries = 0
+        self.hb = 0
         self.queryON = False
         self.nano_ip = None
         self.nano_token = None
@@ -121,6 +122,15 @@ class Controller(polyinterface.Controller):
     def longPoll(self):
         self.heartbeat()
 
+    def heartbeat(self):
+        LOGGER.debug('heartbeat hb={}'.format(str(self.hb)))
+        if self.hb == 0:
+            self.reportCmd("DON",2)
+            self.hb = 1
+        else:
+            self.reportCmd("DOF",2)
+            self.hb = 0
+        
     def install_profile(self):
         try:
             self.poly.installprofile()
