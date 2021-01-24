@@ -4,8 +4,8 @@
     "type": "python3",
     "executable": "nanoleaf_poly.py",
     "install": "install.sh",
-    "shortPoll": "60",
-    "longPoll": "3600",
+    "shortPoll": "90",
+    "longPoll": "600",
     "description": "Connect Nanoleaf Aurora to the ISY994.",
     "notice": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE",
     "credits": [
