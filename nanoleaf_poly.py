@@ -36,8 +36,6 @@ class Controller(polyinterface.Controller):
     def __init__(self, polyglot):
         super(Controller, self).__init__(polyglot)
         self.name = 'NanoLeaf'
-        self.initialized = False
-        self.tries = 0
         self.hb = 0
         self.queryON = False
         self.nano_ip = None
@@ -96,8 +94,7 @@ class Controller(polyinterface.Controller):
                 LOGGER.debug('Token received: {}'.format(self.nano_token))
                 LOGGER.info('Saving token to the Database')
                         
-                        
-            self.setDriver('ST', 1, True)
+            self.setDriver('ST', 1)
             self.discover()
                                                             
         except Exception as ex:
@@ -113,8 +110,6 @@ class Controller(polyinterface.Controller):
             else:
                 self.discovery_thread = None
         
-        self.setDriver('ST', 1)
-        self.reportDrivers()
         for node in self.nodes:
             if  self.nodes[node].queryON == True :
                 self.nodes[node].query()
@@ -176,7 +171,6 @@ class AuroraNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name, ip, token):
         super(AuroraNode, self).__init__(controller, primary, address, name)
         self.queryON = True
-        self.timeout = 5.0
         self.nano_ip = ip
         self.nano_token = token
         self.arrEffects = None
@@ -195,21 +189,21 @@ class AuroraNode(polyinterface.Node):
         
     def setOn(self, command):
         self.my_aurora.on = True
-        self.setDriver('ST', 100, True)
+        self.setDriver('ST', 100)
 
     def setOff(self, command):
         self.my_aurora.off = True
-        self.setDriver('ST', 0, True)
+        self.setDriver('ST', 0)
         
     def setBrightness(self, command):
         intBri = int(command.get('value'))
         self.my_aurora.brightness = intBri                                                   
-        self.setDriver('GV3', intBri, True)
+        self.setDriver('GV3', intBri)
 
     def setEffect(self, command):
         intEffect = int(command.get('value'))
         self.my_aurora.effect = self.arrEffects[intEffect-1]
-        self.setDriver('GV4', intEffect, True)
+        self.setDriver('GV4', intEffect)
     
     def setProfile(self, command):
         self.__saveEffetsList()
@@ -221,12 +215,11 @@ class AuroraNode(polyinterface.Node):
     def __updateValue(self):
         try:
             if self.my_aurora.on is True:
-                self.setDriver('ST', 100, True)
+                self.setDriver('ST', 100)
             else:
-                self.setDriver('ST', 0, True)
-            self.setDriver('GV3', self.my_aurora.brightness, True)
-            self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1, True)
-            self.reportDrivers()
+                self.setDriver('ST', 0)
+            self.setDriver('GV3', self.my_aurora.brightness)
+            self.setDriver('GV4', self.arrEffects.index(self.my_aurora.effect)+1)
         except Exception as ex:
             LOGGER.error('Error updating Aurora value: %s', str(ex))
     
