@@ -112,11 +112,15 @@ class Controller(polyinterface.Controller):
         
         for node in self.nodes:
             if  self.nodes[node].queryON == True :
-                self.nodes[node].query()
+                self.nodes[node].update()
 
     def longPoll(self):
         self.heartbeat()
 
+    def query(self):
+        for node in self.nodes:
+            self.nodes[node].reportDrivers() 
+        
     def heartbeat(self):
         LOGGER.debug('heartbeat hb={}'.format(str(self.hb)))
         if self.hb == 0:
@@ -210,9 +214,9 @@ class AuroraNode(polyinterface.Node):
         self.__BuildProfile()
     
     def query(self):
-        self.__updateValue()
+        self.reportDrivers()
 
-    def __updateValue(self):
+    def update(self):
         try:
             if self.my_aurora.on is True:
                 self.setDriver('ST', 100)
