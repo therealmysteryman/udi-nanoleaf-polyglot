@@ -192,22 +192,34 @@ class AuroraNode(polyinterface.Node):
         pass
         
     def setOn(self, command):
-        self.my_aurora.on = True
-        self.setDriver('ST', 100)
+        try:
+            self.my_aurora.on = True
+            self.setDriver('ST', 100)
+        except:
+            pass
 
     def setOff(self, command):
-        self.my_aurora.off = True
-        self.setDriver('ST', 0)
+        try:
+            self.my_aurora.off = True
+            self.setDriver('ST', 0)
+        except:
+            pass
         
     def setBrightness(self, command):
-        intBri = int(command.get('value'))
-        self.my_aurora.brightness = intBri                                                   
-        self.setDriver('GV3', intBri)
+        try:
+            intBri = int(command.get('value'))
+            self.my_aurora.brightness = intBri                                                   
+            self.setDriver('GV3', intBri)
+        except:
+            pass
 
     def setEffect(self, command):
-        intEffect = int(command.get('value'))
-        self.my_aurora.effect = self.arrEffects[intEffect-1]
-        self.setDriver('GV4', intEffect)
+        try:
+            intEffect = int(command.get('value'))
+            self.my_aurora.effect = self.arrEffects[intEffect-1]
+            self.setDriver('GV4', intEffect)
+        except:
+            pass
     
     def setProfile(self, command):
         self.__saveEffetsList()
