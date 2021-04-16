@@ -12,12 +12,12 @@
         {
             "title": "nanoleaf-poly: A Polyglot v2 interface to NanoLeaf Aurora",
             "author": "AutomationGeek",
-            "version": "2.3.10",
+            "version": "2.3.11",
             "date": "January 28, 2021",
             "source": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot",
             "license": "https://github.com/therealmysteryman/udi-nanoleaf-polyglot/blob/master/LICENSE"
         },
-	{
+        {
             "title": "udi-poly-template-python: A Polyglot v2 Poly template",
             "author": "James Milne (Einstein.42)",
             "version": "2.0.0",
@@ -25,7 +25,7 @@
             "source": "https://github.com/Einstein42/udi-poly-template-python",
             "license": "https://raw.githubusercontent.com/Einstein42/udi-poly-template-python/master/LICENSE"
         },
-	{
+        {
             "title": "A Python3 wrapper for the Nanoleaf API, capable of controlling both Nanoleaf Aurora and Nanoleaf Canvas.",
             "author": "Oro",
             "version": "0.0.5",
