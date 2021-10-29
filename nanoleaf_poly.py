@@ -56,11 +56,12 @@ class Controller(polyinterface.Controller):
                 return False
             
             # Get saved token
-            if 'nano_token' in self.polyConfig['customParams'] :
-                self.nano_token = self.polyConfig['customParams']['nano_token']
-                if self.nano_token  == ' ' :
+            self.nano_token = self.polyConfig.get('customData', {}).get('nano_token')
+            if self.nano_token is not None:
+                if self.nano_token  == ' ':
                     self.nano_token = None
-                LOGGER.debug('Retrieved token : {}'.format(self.nano_token))
+                else:
+                    LOGGER.debug(f'Retrieved token: {self.nano_token}')
             
             # If token is provided overwrite the saved token
             if 'token' in self.polyConfig['customParams'] :
