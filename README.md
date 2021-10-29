@@ -1,3 +1,5 @@
+## This nodeserver has been converted to run on PG3. The code has been moved to https://github.com/UniversalDevicesInc-PG3/udi-nanoleaf-polyglot
+
 # Nanoleaf Polyglot V2 Node Server
 
 ![Build Status](https://travis-ci.org/therealmysteryman/udi-nanoleaf-polyglot.svg?branch=master)
